@@ -1,4 +1,4 @@
-package com.gmail.RoadToJob2019.controllermodule;
+package com.gmail.roadtojob2019.controllermodule;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

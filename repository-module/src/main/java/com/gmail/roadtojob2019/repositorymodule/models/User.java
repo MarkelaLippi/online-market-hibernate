@@ -1,6 +1,6 @@
-package com.gmail.RoadToJob2019.repositorymodule.models;
+package com.gmail.roadtojob2019.repositorymodule.models;
 
-import com.gmail.RoadToJob2019.repositorymodule.converters.RoleConverter;
+import com.gmail.roadtojob2019.repositorymodule.converters.RoleConverter;
 
 import javax.persistence.*;
 import java.util.Objects;
