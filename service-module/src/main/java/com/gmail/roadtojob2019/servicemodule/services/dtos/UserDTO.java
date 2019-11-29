@@ -11,12 +11,12 @@ public class UserDTO {
     private String email;
     private String password;
     private String role;
-    private boolean isActive;
+    private Boolean isActive;
 
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String lastName, String name, String middleName, String email, String password, String role, boolean isActive) {
+    public UserDTO(Long id, String lastName, String name, String middleName, String email, String password, String role, Boolean isActive) {
         this.id = id;
         this.lastName = lastName;
         this.name = name;
@@ -83,11 +83,11 @@ public class UserDTO {
         this.role = role;
     }
 
-    public boolean isActive() {
+    public Boolean getActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         isActive = active;
     }
 
@@ -102,11 +102,12 @@ public class UserDTO {
                 middleName.equals(userDTO.middleName) &&
                 email.equals(userDTO.email) &&
                 password.equals(userDTO.password) &&
-                role.equals(userDTO.role);
+                role.equals(userDTO.role) &&
+                isActive.equals(userDTO.isActive);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, lastName, name, middleName, email, password, role);
+        return Objects.hash(id, lastName, name, middleName, email, password, role, isActive);
     }
 }

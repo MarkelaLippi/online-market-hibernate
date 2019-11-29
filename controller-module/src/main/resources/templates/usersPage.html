@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>All users</title>
+</head>
+<body>
+<table>
+    <caption>Users</caption>
+    <tr>
+        <th>ID</th>
+        <th>E-mail</th>
+        <th>Is active</th>
+        <th>Last name</th>
+        <th>Middle name</th>
+        <th>Name</th>
+        <th>Password</th>
+        <th>Role</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td><span th:text="${user.id}"> 1 </span></td>
+        <td><span th:text="${user.email}"> 2 </span></td>
+        <td><span th:text="${user.getActive()}"> 3 </span></td>
+        <td><span th:text="${user.lastName}"> 4 </span></td>
+        <td><span th:text="${user.middleName}"> 5 </span></td>
+        <td><span th:text="${user.name}"> 6 </span></td>
+        <td><span th:text="${user.password}"> 7 </span></td>
+        <td><span th:text="${user.role}"> 8 </span></td>
+    </tr>
+</table>
+</body>
+</html>
