@@ -6,28 +6,43 @@
     <title>All users</title>
 </head>
 <body>
+
 <table>
     <caption>Users</caption>
     <tr>
-        <th>ID</th>
-        <th>E-mail</th>
-        <th>Is active</th>
         <th>Last name</th>
         <th>Middle name</th>
         <th>Name</th>
-        <th>Password</th>
+        <th>E-mail</th>
         <th>Role</th>
     </tr>
-    <tr th:each="user : ${users}">
-        <td><span th:text="${user.id}"> 1 </span></td>
-        <td><span th:text="${user.email}"> 2 </span></td>
-        <td><span th:text="${user.getActive()}"> 3 </span></td>
-        <td><span th:text="${user.lastName}"> 4 </span></td>
-        <td><span th:text="${user.middleName}"> 5 </span></td>
-        <td><span th:text="${user.name}"> 6 </span></td>
-        <td><span th:text="${user.password}"> 7 </span></td>
-        <td><span th:text="${user.role}"> 8 </span></td>
+    <tr th:each="user : ${users.content}">
+        <td><span th:text="${user.lastName}"></span></td>
+        <td><span th:text="${user.middleName}"></span></td>
+        <td><span th:text="${user.name}"></span></td>
+        <td><span th:text="${user.email}"></span></td>
+        <td><span th:text="${user.role}"></span></td>
+        <td>
+            <input type="checkbox" name="ids" th:value="${user.id}" form="Delete checked users"/>
+            <label>Delete user</label>
+        </td>
+        <td>
+            <form action="/users/change/password" method="post">
+                <input type="hidden" name="id" th:value="${user.id}"/>
+                <input type="submit" value="Change password">
+            </form>
+        </td>
     </tr>
 </table>
+<form action="/users/delete" id="Delete checked users" method="post">
+    <input type="submit" value="Delete checked users">
+</form>
+<div>
+    <th:block th:if="${users.getTotalPages()}>0"
+              th:each="pageNumber:${#numbers.sequence(1,users.getTotalPages())}">
+        <a th:href="@{/users?page={page}(page=${pageNumber})}">
+            <span th:text="${pageNumber}">...</span></a>
+    </th:block>
+</div>
 </body>
 </html>
