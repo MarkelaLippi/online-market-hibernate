@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add user page</title>
+</head>
+<body>
+<div>
+    Add user page
+</div>
+
+<form action="/users/add" method="post" name="add user">
+    <p>
+        <label>
+            <input type="text" name="last name" placeholder="Insert your last name"> Last name
+        </label>
+    </p> <p>
+        <label>
+            <input type="text" name="first name" placeholder="Insert your first name"> First name
+        </label>
+    </p> <p>
+        <label>
+            <input type="text" name="middle name" placeholder="Insert your middle name"> Middle name
+        </label>
+    </p> <p>
+        <label>
+            <input type="email" name="email" placeholder="Insert your e-mail"> E-mail
+        </label>
+    </p>
+    <p>
+        <label>
+            <select name="role">
+                <option value="ADMINISTRATOR">ADMINISTRATOR</option>
+                <option value="SALE USER">SALE USER</option>
+                <option value="CUSTOMER USER">CUSTOMER USER</option>
+                <option value="SECURE API USER">SECURE API USER</option>
+            </select> Role
+        </label>
+    </p>
+    <p>
+        <input type="submit" value="Send">
+    </p>
+    <p>
+        <input type="reset" value="Reset">
+    </p>
+</form>
+
+</body>
+</html>

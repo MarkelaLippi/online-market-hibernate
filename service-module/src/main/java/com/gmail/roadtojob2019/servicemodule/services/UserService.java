@@ -10,4 +10,5 @@ public interface UserService {
     Page<UserDTO> findAllUsersPaginatedAndSortedByEmail(int pageNumber, int pageSize);
     void deleteCheckedUsers(int ids[]);
     void changeUserPassword(Long id);
+    void changeUserRole(Long id, String role);
 }

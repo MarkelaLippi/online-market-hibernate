@@ -2,6 +2,8 @@ package com.gmail.roadtojob2019.servicemodule.services.impl;
 
 import com.gmail.roadtojob2019.repositorymodule.UserRepository;
 import com.gmail.roadtojob2019.repositorymodule.models.User;
+import com.gmail.roadtojob2019.servicemodule.services.EmailService;
+import com.gmail.roadtojob2019.servicemodule.services.UserPasswordGenerator;
 import com.gmail.roadtojob2019.servicemodule.services.UserService;
 import com.gmail.roadtojob2019.servicemodule.services.converters.UserConverter;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO;
@@ -23,6 +25,11 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private UserConverter userConverter;
+    @Autowired
+    private UserPasswordGenerator userPasswordGenerator;
+    @Autowired
+    private EmailService emailService;
+
 
     @Override
     @Transactional
@@ -60,9 +67,20 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void changeUserPassword(Long id) {
-        final String PASSWORD = "new password";
+        final String MAILSUBJECT = "Your password was changed";
+        final String PASSWORD = userPasswordGenerator.generateRandomPassword();
         UserDTO userDTO = userConverter.userToDTO(userRepository.getOne(id));
         userDTO.setPassword(PASSWORD);
+        User user = userConverter.dtoToUser(userDTO);
+        userRepository.save(user);
+        emailService.sendUserPassword(user.getEmail(), MAILSUBJECT, PASSWORD);
+    }
+
+    @Override
+    @Transactional
+    public void changeUserRole(Long id, String role) {
+        UserDTO userDTO = userConverter.userToDTO(userRepository.getOne(id));
+        userDTO.setRole(role);
         User user = userConverter.dtoToUser(userDTO);
         userRepository.save(user);
     }

@@ -32,6 +32,18 @@
                 <input type="submit" value="Change password">
             </form>
         </td>
+        <td>
+            <form action="/users/change/role" method="post">
+                <input type="hidden" name="id" th:value="${user.id}"/>
+                <input type="submit" value="Change role">
+                <select name="role">
+                    <option th:each="role : ${roles}"
+                            th:value="${role.name()}"
+                            th:text="${role.name()}">
+                    </option>
+                </select>
+            </form>
+        </td>
     </tr>
 </table>
 <form action="/users/delete" id="Delete checked users" method="post">
