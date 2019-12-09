@@ -56,13 +56,24 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @GetMapping("/user")
+    String getAddUserPage() {
+        return "addUserPage";
+    }
+
     @PostMapping("/users/add")
     String addUser(@RequestParam(name = "last name") String lastName,
                    @RequestParam(name = "first name") String firstName,
                    @RequestParam(name = "middle name") String middleName,
                    @RequestParam(name = "email") String email,
                    @RequestParam(name = "role") String role) {
-
+        UserDTO userDTO=new UserDTO();
+        userDTO.setLastName(lastName);
+        userDTO.setName(firstName);
+        userDTO.setMiddleName(middleName);
+        userDTO.setEmail(email);
+        userDTO.setRole(role);
+        userService.addUser(userDTO);
         return "redirect:/users";
     }
 }

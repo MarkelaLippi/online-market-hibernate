@@ -11,4 +11,5 @@ public interface UserService {
     void deleteCheckedUsers(int ids[]);
     void changeUserPassword(Long id);
     void changeUserRole(Long id, String role);
+    void addUser(UserDTO user);
 }

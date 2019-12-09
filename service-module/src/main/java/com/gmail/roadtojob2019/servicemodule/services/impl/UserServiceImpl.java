@@ -84,4 +84,10 @@ public class UserServiceImpl implements UserService {
         User user = userConverter.dtoToUser(userDTO);
         userRepository.save(user);
     }
+
+    @Override
+    public void addUser(UserDTO userDTO) {
+        User user = userConverter.dtoToUser(userDTO);
+        userRepository.save(user);
+    }
 }
