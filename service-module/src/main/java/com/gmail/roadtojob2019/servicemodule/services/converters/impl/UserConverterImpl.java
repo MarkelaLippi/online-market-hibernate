@@ -32,7 +32,11 @@ public class UserConverterImpl implements UserConverter {
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         user.setRole(Role.valueOf(userDTO.getRole()));
-        user.setActive(userDTO.getActive());
+        if (userDTO.getActive() == null) {
+            user.setActive(true);
+        } else {
+            user.setActive(userDTO.getActive());
+        }
         return user;
     }
 }

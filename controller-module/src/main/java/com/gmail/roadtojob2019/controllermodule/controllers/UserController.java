@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -57,23 +58,15 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    String getAddUserPage() {
+    String getAddUserPage(Model model) {
+        UserDTO user = new UserDTO();
+        model.addAttribute("user", user);
         return "addUserPage";
     }
 
     @PostMapping("/users/add")
-    String addUser(@RequestParam(name = "last name") String lastName,
-                   @RequestParam(name = "first name") String firstName,
-                   @RequestParam(name = "middle name") String middleName,
-                   @RequestParam(name = "email") String email,
-                   @RequestParam(name = "role") String role) {
-        UserDTO userDTO=new UserDTO();
-        userDTO.setLastName(lastName);
-        userDTO.setName(firstName);
-        userDTO.setMiddleName(middleName);
-        userDTO.setEmail(email);
-        userDTO.setRole(role);
-        userService.addUser(userDTO);
+    String addUser(@ModelAttribute UserDTO user) {
+        userService.addUser(user);
         return "redirect:/users";
     }
 }

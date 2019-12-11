@@ -1,5 +1,5 @@
 package com.gmail.roadtojob2019.repositorymodule.models;
 
 public enum Role {
-    USER, ADMINISTRATOR
+    SALE_USER, ADMINISTRATOR, CUSTOMER_USER, SECURE_API_USER
 }
