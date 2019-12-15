@@ -4,6 +4,7 @@ import com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     List<UserDTO> findAllUsers();
@@ -12,4 +13,5 @@ public interface UserService {
     void changeUserPassword(Long id);
     void changeUserRole(Long id, String role);
     void addUser(UserDTO user);
+    //Optional<UserDTO> findUserByEmail(String email);
 }

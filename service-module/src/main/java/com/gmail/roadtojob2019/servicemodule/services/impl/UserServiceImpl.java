@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,4 +92,11 @@ public class UserServiceImpl implements UserService {
         User user = userConverter.dtoToUser(userDTO);
         userRepository.save(user);
     }
+
+/*
+    @Override
+    public Optional<UserDTO> findUserByEmail(String email) {
+        return Optional.of(userConverter.userToDTO(userRepository.findUserByEmail(email)));
+    }
+*/
 }

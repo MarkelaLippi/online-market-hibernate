@@ -1,7 +1,10 @@
 package com.gmail.roadtojob2019.servicemodule.services.dtos;
 
+//import com.gmail.roadtojob2019.servicemodule.services.validators.UniqueEmail;
+
 import java.util.Objects;
 
+//@UniqueEmail
 public class UserDTO {
 
     private Long id;
