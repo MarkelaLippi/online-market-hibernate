@@ -67,7 +67,10 @@ public class UserController {
     }
 
     @PostMapping("/users/add")
-    String addUser(@ModelAttribute UserDTO user) {
+    String addUser(@ModelAttribute UserDTO user, BindingResult result) {
+        if (result.hasErrors()){
+            return "users";
+        }
         userService.addUser(user);
         return "redirect:/users";
     }
