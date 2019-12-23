@@ -2,40 +2,17 @@ package com.gmail.roadtojob2019.servicemodule.services.dtos;
 
 //import com.gmail.roadtojob2019.servicemodule.services.validators.UniqueEmail;
 
-import javax.validation.constraints.*;
 import java.util.Objects;
 
 //@UniqueEmail
 public class UserDTO {
     private Long id;
-
-    @NotBlank(message = "Last name is mandatory")
-    @Max(40)
-    @Pattern(regexp = "[a-zA-Z]+", message = "Only latin characters")
     private String lastName;
-
-    @NotBlank(message = "Name is mandatory")
-    @Max(20)
-    @Pattern(regexp = "[a-zA-Z]+", message = "Only latin characters")
     private String name;
-
-    @NotBlank(message = "Middle name is mandatory")
-    @Max(40)
-    @Pattern(regexp = "[a-zA-Z]+", message = "Only latin characters")
     private String middleName;
-
-    @Email
-    @NotBlank(message = "Email is mandatory")
-    @Max(50)
-    @Pattern(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", message = "Email is not valid")
     private String email;
-
-    @NotBlank(message = "Password is mandatory")
     private String password;
-
-    @NotBlank(message = "Role is mandatory")
     private String role;
-
     private Boolean isActive;
 
     public UserDTO() {

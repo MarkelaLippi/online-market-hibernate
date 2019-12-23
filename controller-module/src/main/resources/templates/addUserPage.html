@@ -13,23 +13,23 @@
 <form action="/users/add" method="post" name="user" th:object="${user}">
     <p>
         <label>
-            <input type="text" name="last name" placeholder="Insert your last name" th:field="*{lastName}"> Last name
+            <input type="text" name="last name" placeholder="Only latin characters (1-40 symbols)" th:field="*{lastName}"> Last name
         </label>
     </p>
     <p>
         <label>
-            <input type="text" name="first name" placeholder="Insert your first name" th:field="*{name}"> First name
+            <input type="text" name="first name" placeholder="Only latin characters (1-20 symbols)." th:field="*{name}"> First name
         </label>
     </p>
     <p>
         <label>
-            <input type="text" name="middle name" placeholder="Insert your middle name" th:field="*{middleName}"> Middle
+            <input type="text" name="middle name" placeholder="Only latin characters (1-40 symbols)." th:field="*{middleName}"> Middle
             name
         </label>
     </p>
     <p>
         <label>
-            <input type="email" name="email" placeholder="Insert your e-mail" th:field="*{email}"> E-mail
+            <input type="email" name="email" placeholder="Insert your e-mail (less 50 symbols)" th:field="*{email}"> E-mail
         </label>
     </p>
     <p>

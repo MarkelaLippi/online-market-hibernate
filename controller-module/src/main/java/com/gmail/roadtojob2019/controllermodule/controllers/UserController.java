@@ -4,15 +4,13 @@ import com.gmail.roadtojob2019.repositorymodule.models.Role;
 import com.gmail.roadtojob2019.servicemodule.services.RoleService;
 import com.gmail.roadtojob2019.servicemodule.services.UserService;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO;
+import com.gmail.roadtojob2019.servicemodule.services.validators.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,6 +22,15 @@ public class UserController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private UserValidator userValidator;
+
+/*
+    @InitBinder("userDTO")
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(validator);
+    }
+*/
 
     @GetMapping("/users")
     String getAllUsersPaginatedAndSortedByEmail(@RequestParam Optional<Integer> page,
@@ -67,12 +74,14 @@ public class UserController {
     }
 
     @PostMapping("/users/add")
-    String addUser(@ModelAttribute UserDTO user, BindingResult result) {
-        if (result.hasErrors()){
-            return "users";
+    String addUser(@Valid @ModelAttribute UserDTO userDTO, BindingResult bindingResult) {
+        userValidator.validate(userDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "redirect:/user";
+        } else {
+            userService.addUser(userDTO);
+            return "redirect:/users";
         }
-        userService.addUser(user);
-        return "redirect:/users";
     }
 
 /*
