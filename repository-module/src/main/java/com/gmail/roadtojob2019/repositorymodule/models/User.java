@@ -4,6 +4,7 @@ import com.gmail.roadtojob2019.repositorymodule.converters.RoleConverter;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -28,18 +29,22 @@ public class User {
     @Column(name = "is_active")
     private boolean isActive;
 
+    @OneToMany(mappedBy = "user")
+    private Set<Review> review;
+
     public User() {
     }
 
-    public User(Long id, String lastname, String name, String middlename, String email, String password, Role role, boolean isactive) {
+    public User(Long id, String lastName, String name, String middleName, String email, String password, Role role, boolean isActive, Set<Review> review) {
         this.id = id;
-        this.lastName = lastname;
+        this.lastName = lastName;
         this.name = name;
-        this.middleName = middlename;
+        this.middleName = middleName;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.isActive = isactive;
+        this.isActive = isActive;
+        this.review = review;
     }
 
     public Long getId() {
@@ -104,6 +109,14 @@ public class User {
 
     public void setActive(boolean active) {
         this.isActive = active;
+    }
+
+    public Set<Review> getReview() {
+        return review;
+    }
+
+    public void setReview(Set<Review> review) {
+        this.review = review;
     }
 
     @Override

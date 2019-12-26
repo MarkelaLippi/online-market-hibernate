@@ -1,36 +1,24 @@
-package com.gmail.roadtojob2019.repositorymodule.models;
+package com.gmail.roadtojob2019.servicemodule.services.dtos;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
-@Entity
-@Table(name = "reviews")
-public class Review {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", unique = true, nullable = false)
+public class ReviewDTO {
     private Long id;
-    @Column(name = "content")
     private String content;
-    @Column(name = "date")
     private Date date;
-    @Column(name = "status")
     private boolean isActive;
+    private UserDTO userDTO;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    public Review() {
+    public ReviewDTO() {
     }
 
-    public Review(Long id, String content, Date date, boolean isActive, User user) {
+    public ReviewDTO(Long id, String content, Date date, boolean isActive, UserDTO userDTO) {
         this.id = id;
         this.content = content;
         this.date = date;
         this.isActive = isActive;
-        this.user = user;
+        this.userDTO = userDTO;
     }
 
     public Long getId() {
@@ -65,27 +53,28 @@ public class Review {
         isActive = active;
     }
 
-    public User getUser() {
-        return user;
+    public UserDTO getUserDTO() {
+        return userDTO;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Review review = (Review) o;
-        return isActive == review.isActive &&
-                id.equals(review.id) &&
-                content.equals(review.content) &&
-                date.equals(review.date);
+        ReviewDTO reviewDTO = (ReviewDTO) o;
+        return isActive == reviewDTO.isActive &&
+                Objects.equals(id, reviewDTO.id) &&
+                content.equals(reviewDTO.content) &&
+                date.equals(reviewDTO.date) &&
+                userDTO.equals(reviewDTO.userDTO);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, date, isActive);
+        return Objects.hash(id, content, date, isActive, userDTO);
     }
 }
