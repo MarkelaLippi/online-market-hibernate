@@ -2,7 +2,9 @@ package com.gmail.roadtojob2019.servicemodule.services.dtos;
 
 //import com.gmail.roadtojob2019.servicemodule.services.validators.UniqueEmail;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 //@UniqueEmail
 public class UserDTO {
@@ -14,11 +16,12 @@ public class UserDTO {
     private String password;
     private String role;
     private Boolean isActive;
+    private Set<ReviewDTO> reviewDTOs=new HashSet<>();
 
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String lastName, String name, String middleName, String email, String password, String role, Boolean isActive) {
+    public UserDTO(Long id, String lastName, String name, String middleName, String email, String password, String role, Boolean isActive, Set<ReviewDTO> reviewDTOS) {
         this.id = id;
         this.lastName = lastName;
         this.name = name;
@@ -27,6 +30,7 @@ public class UserDTO {
         this.password = password;
         this.role = role;
         this.isActive = isActive;
+        this.reviewDTOs = reviewDTOS;
     }
 
     public Long getId() {
@@ -91,6 +95,14 @@ public class UserDTO {
 
     public void setActive(Boolean active) {
         isActive = active;
+    }
+
+    public Set<ReviewDTO> getReviewDTOs() {
+        return reviewDTOs;
+    }
+
+    public void setReviewDTOs(Set<ReviewDTO> reviewDTOs) {
+        this.reviewDTOs = reviewDTOs;
     }
 
     @Override

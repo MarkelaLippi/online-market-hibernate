@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service;
 public interface ReviewService {
     Page<ReviewDTO> findAllReviewsPaginated(int pageNumber, int pageSize);
 
+    void deleteCheckedReviews(int[] ids);
 }

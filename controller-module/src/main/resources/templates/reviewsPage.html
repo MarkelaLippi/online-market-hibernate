@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>Reviews</title>
+</head>
+<body>
+<table>
+    <caption>Reviews</caption>
+    <tr>
+        <th>Last name</th>
+        <th>Middle name</th>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Show</th>
+    </tr>
+    <tr th:each="review : ${reviews.content}">
+        <td><span th:text="${review.userDTO.lastName}"></span></td>
+        <td><span th:text="${review.userDTO.middleName}"></span></td>
+        <td><span th:text="${review.userDTO.name}"></span></td>
+        <td><span th:text="${review.content}"></span></td>
+        <td>
+            <input type="checkbox" name="shown" th:value="${review.id}">
+        </td>
+        <td>
+            <input type="checkbox" name="ids" th:value="${review.id}" form="Delete checked reviews"/>
+            <label>Delete review</label>
+        </td>
+    </tr>
+</table>
+<form action="/reviews/delete" id="Delete checked reviews" method="post">
+    <input type="submit" value="Delete checked reviews">
+</form>
+<div>
+    <th:block th:if="${reviews.getTotalPages()}>0"
+              th:each="pageNumber:${#numbers.sequence(1,reviews.getTotalPages())}">
+        <a th:href="@{/reviews?page={page}(page=${pageNumber})}">
+            <span th:text="${pageNumber}">...</span></a>
+    </th:block>
+</div>
+</body>
+</html>

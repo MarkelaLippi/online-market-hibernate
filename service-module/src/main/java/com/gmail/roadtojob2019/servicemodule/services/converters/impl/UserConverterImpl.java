@@ -1,13 +1,23 @@
 package com.gmail.roadtojob2019.servicemodule.services.converters.impl;
 
+import com.gmail.roadtojob2019.repositorymodule.models.Review;
 import com.gmail.roadtojob2019.repositorymodule.models.Role;
 import com.gmail.roadtojob2019.repositorymodule.models.User;
+import com.gmail.roadtojob2019.servicemodule.services.converters.ReviewConverter;
 import com.gmail.roadtojob2019.servicemodule.services.converters.UserConverter;
+import com.gmail.roadtojob2019.servicemodule.services.dtos.ReviewDTO;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserConverterImpl implements UserConverter {
+    @Autowired
+    ReviewConverter reviewConverter;
+
     @Override
     public UserDTO userToDTO(User user) {
         UserDTO userDTO = new UserDTO();
@@ -19,6 +29,10 @@ public class UserConverterImpl implements UserConverter {
         userDTO.setPassword(user.getPassword());
         userDTO.setRole(user.getRole().toString());
         userDTO.setActive(user.isActive());
+        userDTO.setReviewDTOs(user.getReviews()
+                .stream()
+                .map(reviewConverter::reviewToDTO)
+                .collect(Collectors.toSet()));
         return userDTO;
     }
 
@@ -37,6 +51,12 @@ public class UserConverterImpl implements UserConverter {
         } else {
             user.setActive(userDTO.getActive());
         }
+
+        //if (userDTO.getReviewDTOs()==null)
+        user.setReviews(userDTO.getReviewDTOs()
+                .stream()
+                .map(reviewConverter::dtoToReview)
+                .collect(Collectors.toSet()));
         return user;
     }
 }

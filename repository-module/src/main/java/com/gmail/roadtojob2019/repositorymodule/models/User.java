@@ -29,8 +29,8 @@ public class User {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Review> review;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Review> reviews;
 
     public User() {
     }
@@ -44,7 +44,7 @@ public class User {
         this.password = password;
         this.role = role;
         this.isActive = isActive;
-        this.review = review;
+        this.reviews = review;
     }
 
     public Long getId() {
@@ -111,12 +111,12 @@ public class User {
         this.isActive = active;
     }
 
-    public Set<Review> getReview() {
-        return review;
+    public Set<Review> getReviews() {
+        return reviews;
     }
 
-    public void setReview(Set<Review> review) {
-        this.review = review;
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
     }
 
     @Override
