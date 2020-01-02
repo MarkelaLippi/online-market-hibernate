@@ -5,7 +5,6 @@ import com.gmail.roadtojob2019.repositorymodule.models.User;
 import com.gmail.roadtojob2019.servicemodule.services.converters.ReviewConverter;
 import com.gmail.roadtojob2019.servicemodule.services.converters.UserConverter;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.ReviewDTO;
-import com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,7 @@ public class ReviewConverterImpl implements ReviewConverter {
         reviewDTO.setDate(review.getDate());
         reviewDTO.setActive(review.isActive());
         User user = review.getUser();
-        UserDTO userDTO = new UserDTO();
+        com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO userDTO = new com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO();
         userDTO.setId(user.getId());
         userDTO.setLastName(user.getLastName());
         userDTO.setName(user.getName());

@@ -1,6 +1,6 @@
 package com.gmail.roadtojob2019.servicemodule.services.impl;
 
-import com.gmail.roadtojob2019.repositorymodule.UserRepository;
+import com.gmail.roadtojob2019.repositorymodule.repositories.UserRepository;
 import com.gmail.roadtojob2019.repositorymodule.models.User;
 import com.gmail.roadtojob2019.servicemodule.services.EmailService;
 import com.gmail.roadtojob2019.servicemodule.services.UserPasswordGenerator;
@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,6 +90,12 @@ public class UserServiceImpl implements UserService {
     public void addUser(UserDTO userDTO) {
         User user = userConverter.dtoToUser(userDTO);
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public UserDTO findUserByEmail(String email) {
+        return userConverter.userToDTO(userRepository.findUserByEmail(email));
     }
 
 /*

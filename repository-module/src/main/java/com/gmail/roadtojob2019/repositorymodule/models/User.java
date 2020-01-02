@@ -32,10 +32,13 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Review> reviews;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Article> articles;
+
     public User() {
     }
 
-    public User(Long id, String lastName, String name, String middleName, String email, String password, Role role, boolean isActive, Set<Review> review) {
+    public User(Long id, String lastName, String name, String middleName, String email, String password, Role role, boolean isActive, Set<Review> reviews, Set<Article> articles) {
         this.id = id;
         this.lastName = lastName;
         this.name = name;
@@ -44,7 +47,8 @@ public class User {
         this.password = password;
         this.role = role;
         this.isActive = isActive;
-        this.reviews = review;
+        this.reviews = reviews;
+        this.articles = articles;
     }
 
     public Long getId() {
@@ -117,6 +121,14 @@ public class User {
 
     public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public Set<Article> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(Set<Article> articles) {
+        this.articles = articles;
     }
 
     @Override

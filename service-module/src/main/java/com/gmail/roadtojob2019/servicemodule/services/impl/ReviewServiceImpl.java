@@ -1,6 +1,6 @@
 package com.gmail.roadtojob2019.servicemodule.services.impl;
 
-import com.gmail.roadtojob2019.repositorymodule.ReviewRepository;
+import com.gmail.roadtojob2019.repositorymodule.repositories.ReviewRepository;
 import com.gmail.roadtojob2019.repositorymodule.models.Review;
 import com.gmail.roadtojob2019.servicemodule.services.ReviewService;
 import com.gmail.roadtojob2019.servicemodule.services.converters.ReviewConverter;

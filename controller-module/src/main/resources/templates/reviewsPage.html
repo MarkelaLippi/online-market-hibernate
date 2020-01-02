@@ -12,6 +12,7 @@
         <th>Last name</th>
         <th>Middle name</th>
         <th>Name</th>
+        <th>Content</th>
         <th>Date</th>
         <th>Show</th>
     </tr>
@@ -20,6 +21,7 @@
         <td><span th:text="${review.userDTO.middleName}"></span></td>
         <td><span th:text="${review.userDTO.name}"></span></td>
         <td><span th:text="${review.content}"></span></td>
+        <td><span th:text="${#dates.format(review.date, 'dd-MM-yyyy')}"></span></td>
         <td>
             <input type="checkbox" name="shown" th:value="${review.id}">
         </td>

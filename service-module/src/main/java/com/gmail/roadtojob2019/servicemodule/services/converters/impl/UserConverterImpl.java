@@ -1,16 +1,12 @@
 package com.gmail.roadtojob2019.servicemodule.services.converters.impl;
 
-import com.gmail.roadtojob2019.repositorymodule.models.Review;
 import com.gmail.roadtojob2019.repositorymodule.models.Role;
 import com.gmail.roadtojob2019.repositorymodule.models.User;
 import com.gmail.roadtojob2019.servicemodule.services.converters.ReviewConverter;
 import com.gmail.roadtojob2019.servicemodule.services.converters.UserConverter;
-import com.gmail.roadtojob2019.servicemodule.services.dtos.ReviewDTO;
-import com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,8 +15,8 @@ public class UserConverterImpl implements UserConverter {
     ReviewConverter reviewConverter;
 
     @Override
-    public UserDTO userToDTO(User user) {
-        UserDTO userDTO = new UserDTO();
+    public com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO userToDTO(User user) {
+        com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO userDTO = new com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO();
         userDTO.setId(user.getId());
         userDTO.setLastName(user.getLastName());
         userDTO.setName(user.getName());
@@ -37,7 +33,7 @@ public class UserConverterImpl implements UserConverter {
     }
 
     @Override
-    public User dtoToUser(UserDTO userDTO) {
+    public User dtoToUser(com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO userDTO) {
         User user = new User();
         user.setId(userDTO.getId());
         user.setLastName(userDTO.getLastName());

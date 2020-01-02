@@ -13,5 +13,6 @@ public interface UserService {
     void changeUserPassword(Long id);
     void changeUserRole(Long id, String role);
     void addUser(UserDTO user);
+    UserDTO findUserByEmail(String email);
     //Optional<UserDTO> findUserByEmail(String email);
 }
