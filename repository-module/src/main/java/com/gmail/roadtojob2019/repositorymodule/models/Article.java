@@ -3,6 +3,7 @@ package com.gmail.roadtojob2019.repositorymodule.models;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "articles")
@@ -22,17 +23,20 @@ public class Article {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments;
 
     public Article() {
     }
 
-    public Article(Long id, String title, String content, String description, Date date, User user) {
+    public Article(Long id, String title, String content, String description, Date date, User user, Set<Comment> comments) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.description = description;
         this.date = date;
         this.user = user;
+        this.comments = comments;
     }
 
     public Long getId() {
@@ -81,6 +85,14 @@ public class Article {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override

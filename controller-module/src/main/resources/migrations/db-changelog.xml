@@ -32,6 +32,7 @@
             <column name="role" value="ADMINISTRATOR"/>
         </insert>
     </changeSet>
+
     <changeSet author="RoadToJob2019@gmail.com" id="ADD_USERS_TABLE_2">
         <insert tableName="users">
             <column name="last_name" value="Ivanov"/>
@@ -42,6 +43,7 @@
             <column name="role" value="SALE_USER"/>
         </insert>
     </changeSet>
+
     <changeSet author="RoadToJob2019@gmail.com" id="ADD_USERS_TABLE_3">
         <insert tableName="users">
             <column name="last_name" value="Petrov"/>
@@ -52,6 +54,7 @@
             <column name="role" value="CUSTOMER_USER"/>
         </insert>
     </changeSet>
+
     <changeSet author="RoadToJob2019@gmail.com" id="ADD_USERS_TABLE_4">
         <insert tableName="users">
             <column name="last_name" value="Sidorov"/>
@@ -75,34 +78,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="RoadToJob2019@gmail.com" id="ADD_REVIEWS_TABLE_1">
-        <insert tableName="reviews">
-            <column name="content" value="Good review"/>
-            <column name="date" value="2019-12-02"/>
-            <column name="user_id" value="1"/>
-        </insert>
-    </changeSet>
-    <changeSet author="RoadToJob2019@gmail.com" id="ADD_REVIEWS_TABLE_2">
-        <insert tableName="reviews">
-            <column name="content" value="Very good review"/>
-            <column name="date" value="2019-10-25"/>
-            <column name="user_id" value="2"/>
-        </insert>
-    </changeSet>
-    <changeSet author="RoadToJob2019@gmail.com" id="ADD_REVIEWS_TABLE_3">
-        <insert tableName="reviews">
-            <column name="content" value="Bad review"/>
-            <column name="date" value="2019-09-01"/>
-            <column name="user_id" value="3"/>
-        </insert>
-    </changeSet>
-    <changeSet author="RoadToJob2019@gmail.com" id="ADD_REVIEWS_TABLE_4">
-        <insert tableName="reviews">
-            <column name="content" value="Very bad review"/>
-            <column name="date" value="2019-12-31"/>
-            <column name="user_id" value="1"/>
-        </insert>
-    </changeSet>
     <changeSet author="RoadToJob2019@gmail.com" id="FK_REVIEWS_TABLE">
         <addForeignKeyConstraint baseTableName="reviews"
                                  baseColumnNames="user_id"
@@ -112,4 +87,178 @@
                                  onDelete="CASCADE"
                                  onUpdate="RESTRICT"/>
     </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="ADD_REVIEWS_TABLE_1">
+        <insert tableName="reviews">
+            <column name="content" value="Good review"/>
+            <column name="date" value="2019-12-02"/>
+            <column name="user_id" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="ADD_REVIEWS_TABLE_2">
+        <insert tableName="reviews">
+            <column name="content" value="Very good review"/>
+            <column name="date" value="2019-10-25"/>
+            <column name="user_id" value="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="ADD_REVIEWS_TABLE_3">
+        <insert tableName="reviews">
+            <column name="content" value="Bad review"/>
+            <column name="date" value="2019-09-01"/>
+            <column name="user_id" value="3"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="ADD_REVIEWS_TABLE_4">
+        <insert tableName="reviews">
+            <column name="content" value="Very bad review"/>
+            <column name="date" value="2019-12-31"/>
+            <column name="user_id" value="1"/>
+        </insert>
+    </changeSet>
+
+
+    <changeSet author="RoadToJob2019@gmail.com" id="CREATE_ARTICLES_TABLE">
+        <createTable tableName="articles">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="content" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="date" type="TIMESTAMP"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="FK_ARTICLES_TABLE">
+        <addForeignKeyConstraint baseTableName="articles"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 constraintName="FK_articles_users"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"/>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="ADD_ARTICLES_TABLE_1">
+        <insert tableName="articles">
+            <column name="title" value="First article"/>
+            <column name="content" value="Very good content"/>
+            <column name="description" value="Very good..."/>
+            <column name="date" value="2019-11-04"/>
+            <column name="user_id" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="ADD_ARTICLES_TABLE_2">
+        <insert tableName="articles">
+            <column name="title" value="Second article"/>
+            <column name="content" value="Good content"/>
+            <column name="description" value="Good..."/>
+            <column name="date" value="2019-12-01"/>
+            <column name="user_id" value="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="ADD_ARTICLES_TABLE_3">
+        <insert tableName="articles">
+            <column name="title" value="Third article"/>
+            <column name="content" value="Very bad content"/>
+            <column name="description" value="Very bad..."/>
+            <column name="date" value="2019-09-20"/>
+            <column name="user_id" value="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="ADD_ARTICLES_TABLE_4">
+        <insert tableName="articles">
+            <column name="title" value="Fourth article"/>
+            <column name="content" value="Bad content"/>
+            <column name="description" value="Bad..."/>
+            <column name="date" value="2019-12-10"/>
+            <column name="user_id" value="4"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="CREATE_COMMENTS_TABLE">
+        <createTable tableName="comments">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date" type="TIMESTAMP"/>
+            <column name="content" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="article_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="FK_COMMENTS_TABLE_1">
+        <addForeignKeyConstraint baseTableName="comments"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 constraintName="FK_comments_users"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"/>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="FK_COMMENTS_TABLE_2">
+        <addForeignKeyConstraint baseTableName="comments"
+                                 baseColumnNames="article_id"
+                                 referencedTableName="articles"
+                                 referencedColumnNames="id"
+                                 constraintName="FK_comments_articles"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"/>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="ADD_COMMENTS_TABLE_1">
+        <insert tableName="comments">
+            <column name="date" value="2019-12-18"/>
+            <column name="content" value="Bad comment"/>
+            <column name="user_id" value="4"/>
+            <column name="article_id" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="ADD_COMMENTS_TABLE_2">
+        <insert tableName="comments">
+            <column name="date" value="2019-12-22"/>
+            <column name="content" value="Very bad comment"/>
+            <column name="user_id" value="2"/>
+            <column name="article_id" value="3"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="ADD_COMMENTS_TABLE_3">
+        <insert tableName="comments">
+            <column name="date" value="2019-12-29"/>
+            <column name="content" value="Very good comment"/>
+            <column name="user_id" value="4"/>
+            <column name="article_id" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="ADD_COMMENTS_TABLE_4">
+        <insert tableName="comments">
+            <column name="date" value="2019-12-30"/>
+            <column name="content" value="Good comment"/>
+            <column name="user_id" value="1"/>
+            <column name="article_id" value="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="ADD_COMMENTS_TABLE_5">
+        <insert tableName="comments">
+            <column name="date" value="2019-12-27"/>
+            <column name="content" value="Normal comment"/>
+            <column name="user_id" value="3"/>
+            <column name="article_id" value="1"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

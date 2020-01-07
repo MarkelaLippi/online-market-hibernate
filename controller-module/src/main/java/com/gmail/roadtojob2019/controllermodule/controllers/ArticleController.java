@@ -18,13 +18,20 @@ public class ArticleController {
 
     @GetMapping("/articles")
     String getAllArticlesPaginatedAndSortedByDate(@RequestParam Optional<Integer> page,
-                                                @RequestParam Optional<Integer> size,
-                                                Model model) {
+                                                  @RequestParam Optional<Integer> size,
+                                                  Model model) {
         Integer currentPage = page.orElse(1);
         Integer sizePage = size.orElse(10);
         Page<ArticleDTO> articleDTOs = articleService.findAllArticlesPaginatedAndSortedByDate(currentPage, sizePage);
         model.addAttribute("articles", articleDTOs);
         return "articlesPage";
+    }
+
+    @GetMapping("/article")
+    String getArticle(@RequestParam Long id, Model model) {
+        ArticleDTO articleDTO = articleService.findArticleById(id);
+        model.addAttribute("article", articleDTO);
+        return "articlePage";
     }
 
 }

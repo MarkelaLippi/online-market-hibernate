@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>Article</title>
+</head>
+<body>
+<table>
+    <caption>Article</caption>
+    <tr>
+        <th>Author name</th>
+        <th>Author last name</th>
+        <th>Date</th>
+        <th>Content</th>
+    </tr>
+    <tr th:object="${article}">
+        <td><span th:text="*{userDTO.name}"></span></td>
+        <td><span th:text="*{userDTO.lastName}"></span></td>
+        <td><span th:text="*{#dates.format(date, 'dd-MM-yyyy')}"></span></td>
+        <td><span th:text="*{content}"></span></td>
+    </tr>
+</table>
+<table>
+    <caption>Comments</caption>
+    <tr>
+        <th>User name</th>
+        <th>User last name</th>
+        <th>Date</th>
+        <th>Content</th>
+    </tr>
+    <tr th:each="comment : ${article.commentDTOs}">
+        <td><span th:text="${comment.userDTO.name}"></span></td>
+        <td><span th:text="${comment.userDTO.lastName}"></span></td>
+        <td><span th:text="${#dates.format(comment.date, 'dd-MM-yyyy')}"></span></td>
+        <td><span th:text="${comment.content}"></span></td>
+    </tr>
+</table>
+
+</body>
+</html>

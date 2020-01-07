@@ -1,7 +1,10 @@
 package com.gmail.roadtojob2019.servicemodule.services.dtos;
 
+import com.gmail.roadtojob2019.repositorymodule.models.Comment;
+
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 
 public class ArticleDTO {
     private Long id;
@@ -10,17 +13,19 @@ public class ArticleDTO {
     private String description;
     private Date date;
     private UserDTO userDTO;
+    private Set<CommentDTO> commentDTOs;
 
     public ArticleDTO() {
     }
 
-    public ArticleDTO(Long id, String title, String content, String description, Date date, UserDTO userDTO) {
+    public ArticleDTO(Long id, String title, String content, String description, Date date, UserDTO userDTO, Set<CommentDTO> commentDTOs) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.description = description;
         this.date = date;
         this.userDTO = userDTO;
+        this.commentDTOs = commentDTOs;
     }
 
     public Long getId() {
@@ -69,6 +74,14 @@ public class ArticleDTO {
 
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
+    }
+
+    public Set<CommentDTO> getCommentDTOs() {
+        return commentDTOs;
+    }
+
+    public void setCommentDTOs(Set<CommentDTO> commentDTOs) {
+        this.commentDTOs = commentDTOs;
     }
 
     @Override

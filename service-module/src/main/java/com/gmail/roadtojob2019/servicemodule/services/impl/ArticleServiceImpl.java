@@ -1,5 +1,6 @@
 package com.gmail.roadtojob2019.servicemodule.services.impl;
 
+import com.gmail.roadtojob2019.repositorymodule.models.Article;
 import com.gmail.roadtojob2019.repositorymodule.repositories.ArticleRepository;
 import com.gmail.roadtojob2019.servicemodule.services.ArticleService;
 import com.gmail.roadtojob2019.servicemodule.services.converters.ArticleConverter;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -27,5 +30,10 @@ public class ArticleServiceImpl implements ArticleService {
         return articleRepository
                 .findAll(userPageParameters)
                 .map(articleConverter::articleToDTO);
+    }
+
+    @Override
+    public ArticleDTO findArticleById(Long id) {
+        return articleConverter.articleToDTO(articleRepository.findById(id).orElseThrow());
     }
 }
