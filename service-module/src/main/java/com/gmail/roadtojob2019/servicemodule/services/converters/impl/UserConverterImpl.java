@@ -6,7 +6,6 @@ import com.gmail.roadtojob2019.servicemodule.services.converters.ReviewConverter
 import com.gmail.roadtojob2019.servicemodule.services.converters.UserConverter;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +43,7 @@ public class UserConverterImpl implements UserConverter {
         user.setName(userDTO.getName());
         user.setMiddleName(userDTO.getMiddleName());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setPassword(userDTO.getPassword());
         user.setRole(Role.valueOf(userDTO.getRole()));
         if (userDTO.getActive() == null) {
             user.setActive(true);

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,8 @@ public class UserServiceImpl implements UserService {
     private UserPasswordGenerator userPasswordGenerator;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -88,6 +91,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void addUser(UserDTO userDTO) {
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User user = userConverter.dtoToUser(userDTO);
         userRepository.save(user);
     }
