@@ -7,4 +7,5 @@ public interface ArticleConverter {
     ArticleDTO articleToDTO(Article article);
 
     Article dtoToArticle(ArticleDTO articleDTO);
+
 }

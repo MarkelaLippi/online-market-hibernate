@@ -49,12 +49,11 @@ public class ArticleConverterImpl implements ArticleConverter {
     @Override
     public Article dtoToArticle(ArticleDTO articleDTO) {
         Article article = new Article();
-        article.setId(articleDTO.getId());
         article.setTitle(articleDTO.getTitle());
         article.setContent(articleDTO.getContent());
         article.setDescription(articleDTO.getDescription());
         article.setDate(articleDTO.getDate());
-        article.setUser(userConverter.dtoToUser(articleDTO.getUserDTO()));
+        //article.setUser(userConverter.dtoToUser(articleDTO.getUserDTO()));
         return article;
     }
 }

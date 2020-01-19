@@ -13,7 +13,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -35,5 +38,24 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleDTO findArticleById(Long id) {
         return articleConverter.articleToDTO(articleRepository.findById(id).orElseThrow());
+    }
+
+    @Override
+    public List<ArticleDTO> findAllArticles() {
+        return articleRepository
+                .findAll()
+                .stream()
+                .map(articleConverter::articleToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addArticle(ArticleDTO articleDTO) {
+        articleRepository.save(articleConverter.dtoToArticle(articleDTO));
+    }
+
+    @Override
+    public void deleteArticle(Long id) {
+        articleRepository.deleteById(id);
     }
 }

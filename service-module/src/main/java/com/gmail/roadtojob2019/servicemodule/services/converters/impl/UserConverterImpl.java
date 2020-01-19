@@ -4,7 +4,10 @@ import com.gmail.roadtojob2019.repositorymodule.models.Role;
 import com.gmail.roadtojob2019.repositorymodule.models.User;
 import com.gmail.roadtojob2019.servicemodule.services.converters.ReviewConverter;
 import com.gmail.roadtojob2019.servicemodule.services.converters.UserConverter;
+import com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -12,11 +15,13 @@ import java.util.stream.Collectors;
 @Service
 public class UserConverterImpl implements UserConverter {
     @Autowired
-    ReviewConverter reviewConverter;
+    private ReviewConverter reviewConverter;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
-    public com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO userToDTO(User user) {
-        com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO userDTO = new com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO();
+    public UserDTO userToDTO(User user) {
+      UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setLastName(user.getLastName());
         userDTO.setName(user.getName());
@@ -33,14 +38,13 @@ public class UserConverterImpl implements UserConverter {
     }
 
     @Override
-    public User dtoToUser(com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO userDTO) {
+    public User dtoToUser(UserDTO userDTO) {
         User user = new User();
-        user.setId(userDTO.getId());
         user.setLastName(userDTO.getLastName());
         user.setName(userDTO.getName());
         user.setMiddleName(userDTO.getMiddleName());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setRole(Role.valueOf(userDTO.getRole()));
         if (userDTO.getActive() == null) {
             user.setActive(true);
