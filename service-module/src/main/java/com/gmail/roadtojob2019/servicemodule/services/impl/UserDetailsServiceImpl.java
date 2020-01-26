@@ -1,6 +1,5 @@
 package com.gmail.roadtojob2019.servicemodule.services.impl;
 
-
 import com.gmail.roadtojob2019.servicemodule.services.UserService;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.AppUserPrincipal;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO;

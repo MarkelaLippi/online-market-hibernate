@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class AppUserPrincipal implements UserDetails {
     private UserDTO userDTO;
-    private Set<GrantedAuthority> roles=new HashSet<>();
+    private Set<GrantedAuthority> roles = new HashSet<>();
 
     public AppUserPrincipal(UserDTO userDTO) {
         this.userDTO = userDTO;

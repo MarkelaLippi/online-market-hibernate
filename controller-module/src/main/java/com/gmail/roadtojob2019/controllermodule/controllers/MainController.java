@@ -5,28 +5,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MainController {
-    @GetMapping("/admin")
-    public String getStartingPage() {
-        return "startingPage";
+
+    @GetMapping("/administrator")
+    public String getAdminPage() {
+        return "administrator";
     }
-    @GetMapping("/1")
-    public String get1() {
-        return "1";
+
+    @GetMapping("/sale")
+    public String getSalePage() {
+        return "sale";
     }
-    @GetMapping("/2")
-    public String get2() {
-        return "2";
+
+    @GetMapping("/customer")
+    public String getCustomerPage() {
+        return "customer";
     }
-    @GetMapping("/3")
-    public String get3() {
-        return "3";
+
+    @GetMapping("/secure")
+    public String getSecurePage() {
+        return "secure";
     }
-    @GetMapping("/4")
-    public String get4() {
-        return "4";
-    }
-    @GetMapping("/403")
-    public String get403() {
-        return "403";
+
+    @GetMapping("/error")
+    public String getErrorPage() {
+        return "error";
     }
 }

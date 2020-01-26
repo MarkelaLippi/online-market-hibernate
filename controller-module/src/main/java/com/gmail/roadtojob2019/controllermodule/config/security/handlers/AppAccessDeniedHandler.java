@@ -23,9 +23,9 @@ public class AppAccessDeniedHandler implements AccessDeniedHandler {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             logger.info("{} try to access in protected resource: {}",
-            authentication.getName(),
+                    authentication.getName(),
                     httpServletRequest.getRequestURI());
         }
-        httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/403");
+        httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/error");
     }
 }

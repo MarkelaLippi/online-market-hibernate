@@ -120,7 +120,6 @@
         </insert>
     </changeSet>
 
-
     <changeSet author="RoadToJob2019@gmail.com" id="CREATE_ARTICLES_TABLE">
         <createTable tableName="articles">
             <column name="id" type="BIGINT" autoIncrement="true">
@@ -260,5 +259,4 @@
             <column name="article_id" value="1"/>
         </insert>
     </changeSet>
-
 </databaseChangeLog>

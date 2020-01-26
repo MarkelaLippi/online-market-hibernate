@@ -19,7 +19,7 @@ import java.util.Collection;
 @Component
 public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    //private static final Logger logger = LoggerFactory.getLogger(AppAuthenticationSuccessHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(AppAuthenticationSuccessHandler.class);
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     public RedirectStrategy getRedirectStrategy() {
@@ -42,7 +42,7 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
                         HttpServletResponse response, Authentication authentication) throws IOException {
         String targetUrl = determineTargetUrl(authentication);
         if (response.isCommitted()) {
-            //logger.debug("Response has already been committed. Unable to redirect to {} ", targetUrl);
+            logger.debug("Response has already been committed. Unable to redirect to {} ", targetUrl);
             return;
         }
         redirectStrategy.sendRedirect(request, response, targetUrl);
@@ -53,20 +53,22 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
                 = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
             if (grantedAuthority.getAuthority().equalsIgnoreCase("ADMINISTRATOR")) {
-                // logger.info("{} role detected, return  ", grantedAuthority.toString());
-                return "/1";
+                logger.info("{} role detected, return  ", grantedAuthority.toString());
+                return "/administrator";
             } else if (grantedAuthority.getAuthority().equalsIgnoreCase("SALE_USER")) {
-                return "/2";
+                logger.info("{} role detected, return  ", grantedAuthority.toString());
+                return "/sale";
             } else if (grantedAuthority.getAuthority().equalsIgnoreCase("CUSTOMER_USER")) {
-                return "/3";
+                logger.info("{} role detected, return  ", grantedAuthority.toString());
+                return "/customer";
             } else if (grantedAuthority.getAuthority().equalsIgnoreCase("SECURE_API_USER")) {
-                return "/4";
+                logger.info("{} role detected, return  ", grantedAuthority.toString());
+                return "/secure";
             }
         }
-        //       logger.debug("Not found matched roles, check success Handler");
+        logger.debug("Not found matched roles, check success Handler");
         throw new IllegalStateException();
     }
-
 
     private void clearAuthenticationAttributes(HttpServletRequest request) {
         HttpSession session = request.getSession(false);

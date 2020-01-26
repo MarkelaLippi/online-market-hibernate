@@ -25,13 +25,6 @@ public class UserController {
     @Autowired
     private UserValidator userValidator;
 
-/*
-    @InitBinder("userDTO")
-    protected void initBinder(WebDataBinder binder) {
-        binder.setValidator(validator);
-    }
-*/
-
     @GetMapping("/users")
     String getAllUsersPaginatedAndSortedByEmail(@RequestParam Optional<Integer> page,
                                                 @RequestParam Optional<Integer> size,
@@ -83,15 +76,4 @@ public class UserController {
             return "redirect:/users";
         }
     }
-
-/*
-    @PostMapping("/users/add")
-    String addUser(@ModelAttribute @Valid UserDTO user, BindingResult result) {
-        if(result.hasErrors()) {
-            return "usersPage";
-        }
-        userService.addUser(user);
-        return "redirect:/users";
-    }
-*/
 }

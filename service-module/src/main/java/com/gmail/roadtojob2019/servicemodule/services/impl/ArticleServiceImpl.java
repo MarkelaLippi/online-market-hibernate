@@ -1,6 +1,5 @@
 package com.gmail.roadtojob2019.servicemodule.services.impl;
 
-import com.gmail.roadtojob2019.repositorymodule.models.Article;
 import com.gmail.roadtojob2019.repositorymodule.repositories.ArticleRepository;
 import com.gmail.roadtojob2019.servicemodule.services.ArticleService;
 import com.gmail.roadtojob2019.servicemodule.services.converters.ArticleConverter;
@@ -14,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -36,11 +33,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional
     public ArticleDTO findArticleById(Long id) {
         return articleConverter.articleToDTO(articleRepository.findById(id).orElseThrow());
     }
 
     @Override
+    @Transactional
     public List<ArticleDTO> findAllArticles() {
         return articleRepository
                 .findAll()
@@ -50,11 +49,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional
     public void addArticle(ArticleDTO articleDTO) {
         articleRepository.save(articleConverter.dtoToArticle(articleDTO));
     }
 
     @Override
+    @Transactional
     public void deleteArticle(Long id) {
         articleRepository.deleteById(id);
     }

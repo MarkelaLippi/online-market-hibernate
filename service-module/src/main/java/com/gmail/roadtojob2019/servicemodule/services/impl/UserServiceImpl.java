@@ -101,11 +101,4 @@ public class UserServiceImpl implements UserService {
     public UserDTO findUserByEmail(String email) {
         return userConverter.userToDTO(userRepository.findUserByEmail(email));
     }
-
-/*
-    @Override
-    public Optional<UserDTO> findUserByEmail(String email) {
-        return Optional.of(userConverter.userToDTO(userRepository.findUserByEmail(email)));
-    }
-*/
 }

@@ -1,7 +1,5 @@
 package com.gmail.roadtojob2019.servicemodule.services.dtos;
 
-import com.gmail.roadtojob2019.repositorymodule.models.Comment;
-
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;

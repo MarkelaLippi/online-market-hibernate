@@ -20,7 +20,7 @@ public class UserConverterImpl implements UserConverter {
 
     @Override
     public UserDTO userToDTO(User user) {
-      UserDTO userDTO = new UserDTO();
+        UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setLastName(user.getLastName());
         userDTO.setName(user.getName());
@@ -50,8 +50,6 @@ public class UserConverterImpl implements UserConverter {
         } else {
             user.setActive(userDTO.getActive());
         }
-
-        //if (userDTO.getReviewDTOs()==null)
         user.setReviews(userDTO.getReviewDTOs()
                 .stream()
                 .map(reviewConverter::dtoToReview)

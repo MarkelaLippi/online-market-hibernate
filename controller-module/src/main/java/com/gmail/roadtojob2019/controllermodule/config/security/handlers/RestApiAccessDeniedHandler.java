@@ -25,6 +25,6 @@ public class RestApiAccessDeniedHandler implements AccessDeniedHandler {
         if (auth != null) {
             logger.info("{} requested API access to restricted zone: {}", auth.getName(), request.getRequestURI());
         }
-        response.sendRedirect(request.getContextPath() + "/403");
+        response.sendRedirect(request.getContextPath() + "/error");
     }
 }

@@ -33,5 +33,4 @@ public class ArticleController {
         model.addAttribute("article", articleDTO);
         return "articlePage";
     }
-
 }

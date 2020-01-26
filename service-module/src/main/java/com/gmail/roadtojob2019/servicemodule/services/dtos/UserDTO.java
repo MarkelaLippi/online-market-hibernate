@@ -1,12 +1,9 @@
 package com.gmail.roadtojob2019.servicemodule.services.dtos;
 
-//import com.gmail.roadtojob2019.servicemodule.services.validators.UniqueEmail;
-
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-//@UniqueEmail
 public class UserDTO {
     private Long id;
     private String lastName;
@@ -16,7 +13,7 @@ public class UserDTO {
     private String password;
     private String role;
     private Boolean isActive;
-    private Set<ReviewDTO> reviewDTOs=new HashSet<>();
+    private Set<ReviewDTO> reviewDTOs = new HashSet<>();
 
     public UserDTO() {
     }

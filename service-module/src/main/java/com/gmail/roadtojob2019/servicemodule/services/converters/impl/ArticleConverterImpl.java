@@ -1,7 +1,6 @@
 package com.gmail.roadtojob2019.servicemodule.services.converters.impl;
 
 import com.gmail.roadtojob2019.repositorymodule.models.Article;
-import com.gmail.roadtojob2019.repositorymodule.models.Comment;
 import com.gmail.roadtojob2019.repositorymodule.models.User;
 import com.gmail.roadtojob2019.servicemodule.services.converters.ArticleConverter;
 import com.gmail.roadtojob2019.servicemodule.services.converters.CommentConverter;
@@ -53,7 +52,6 @@ public class ArticleConverterImpl implements ArticleConverter {
         article.setContent(articleDTO.getContent());
         article.setDescription(articleDTO.getDescription());
         article.setDate(articleDTO.getDate());
-        //article.setUser(userConverter.dtoToUser(articleDTO.getUserDTO()));
         return article;
     }
 }

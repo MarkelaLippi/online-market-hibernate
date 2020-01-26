@@ -24,12 +24,12 @@ public class RestApiArticleController {
     }
 
     @PostMapping
-    void addArticle(@RequestBody ArticleDTO articleDTO){
+    void addArticle(@RequestBody ArticleDTO articleDTO) {
         articleService.addArticle(articleDTO);
     }
 
     @DeleteMapping("{id}")
-    void deleteArticle(@PathVariable Long id){
+    void deleteArticle(@PathVariable Long id) {
         articleService.deleteArticle(id);
     }
 }
