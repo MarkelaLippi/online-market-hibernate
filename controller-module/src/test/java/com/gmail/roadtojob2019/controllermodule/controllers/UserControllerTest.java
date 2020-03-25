@@ -1,5 +1,6 @@
 package com.gmail.roadtojob2019.controllermodule.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmail.roadtojob2019.repositorymodule.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,13 @@ class UserControllerTest {
     @MockBean
     private UserRepository userRepository;
 
+    @MockBean
+    private ObjectMapper objectMapper;
+
     @Test
     void getAllUsersPaginatedAndSortedByEmail() throws Exception {
         willReturn(Collections.EMPTY_LIST).given(userRepository).findAll();
-        mockMvc.perform(get("/users"))
+        mockMvc.perform(get("/users").contentType("application/json"))
                 .andExpect(status().is3xxRedirection());
     }
 }
