@@ -5,7 +5,7 @@ import com.gmail.roadtojob2019.servicemodule.services.RoleService;
 import com.gmail.roadtojob2019.servicemodule.services.UserService;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO;
 import com.gmail.roadtojob2019.servicemodule.services.validators.UserValidator;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,33 +17,31 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequiredArgsConstructor
 public class UserController {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private RoleService roleService;
-    @Autowired
-    private UserValidator userValidator;
+
+    private final UserService userService;
+    private final RoleService roleService;
+    private final UserValidator userValidator;
 
     @GetMapping("/users")
-    String getAllUsersPaginatedAndSortedByEmail(@RequestParam Optional<Integer> page,
-                                                @RequestParam Optional<Integer> size,
-                                                Model model) {
-        Integer currentPage = page.orElse(1);
-        Integer sizePage = size.orElse(10);
-        Page<UserDTO> users = userService.findAllUsersPaginatedAndSortedByEmail(currentPage, sizePage);
+    String getPageOfUsersSortedByEmail(@RequestParam Optional<Integer> pageNumber,
+                                       @RequestParam Optional<Integer> pageSize,
+                                       Model model) {
+        Integer currentPageNumber = pageNumber.orElse(1);
+        Integer currentPageSize = pageSize.orElse(10);
+        Page<UserDTO> users = userService.getPageOfUsersSortedByEmail(currentPageNumber, currentPageSize);
         model.addAttribute("users", users);
-        List<Role> roles = roleService.findAllRoles();
+        List<Role> roles = roleService.getRoles();
         model.addAttribute("roles", roles);
-        return "usersPage";
+        return "users";
     }
 
     @PostMapping("/users/delete")
-    String deleteCheckedUsers(@RequestParam(required = false, name = "ids") int[] ids) {
-        if (ids == null) {
-            return "redirect:/users";
+    String deleteCheckedUsers(@RequestParam final int[] usersIDs) {
+        if (usersIDs != null) {
+            userService.deleteCheckedUsers(usersIDs);
         }
-        userService.deleteCheckedUsers(ids);
         return "redirect:/users";
     }
 

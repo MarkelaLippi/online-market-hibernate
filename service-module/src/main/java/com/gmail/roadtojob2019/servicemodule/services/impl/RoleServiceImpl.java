@@ -13,7 +13,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional
-    public List<Role> findAllRoles() {
+    public List<Role> getRoles() {
         return Arrays.asList(Role.values());
     }
 }

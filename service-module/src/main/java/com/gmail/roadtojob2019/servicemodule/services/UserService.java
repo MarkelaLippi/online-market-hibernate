@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserService {
     List<UserDTO> findAllUsers();
 
-    Page<UserDTO> findAllUsersPaginatedAndSortedByEmail(int pageNumber, int pageSize);
+    Page<UserDTO> getPageOfUsersSortedByEmail(int pageNumber, int pageSize);
 
     void deleteCheckedUsers(int ids[]);
 
