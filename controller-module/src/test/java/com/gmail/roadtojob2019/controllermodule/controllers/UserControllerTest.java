@@ -68,7 +68,8 @@ class UserControllerTest {
         final List<Long> usersIDs = List.of(1L, 2L);
         doNothing().when(userRepository).deleteUsersByIdIn(usersIDs);
         //when
-        mockMvc.perform(post("/users/delete?usersIDs=1&usersIDs=2"))
+//        mockMvc.perform(post("/users/delete?usersIDs=1&usersIDs=2"))
+        mockMvc.perform(post("/users/delete").param("usersIDs", "1", "2"))
                 //then
                 .andExpect(status().isOk());
 
