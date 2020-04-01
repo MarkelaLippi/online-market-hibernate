@@ -8,8 +8,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -32,6 +31,7 @@ public class Article {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments=new HashSet<>();
 }
