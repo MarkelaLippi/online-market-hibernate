@@ -1,15 +1,15 @@
 package com.gmail.roadtojob2019.repositorymodule.models;
 
 import com.gmail.roadtojob2019.repositorymodule.converters.RoleConverter;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

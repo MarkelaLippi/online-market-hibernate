@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collections;
 import java.util.List;
 
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -66,12 +67,11 @@ class UserControllerTest {
     void deleteCheckedUsers_arrayOfUserID_deleteUsers() throws Exception {
         //given
         final List<Long> usersIDs = List.of(1L, 2L);
-        doNothing().when(userRepository).deleteUsersByIdIn(usersIDs);
+        willDoNothing().given(userRepository).deleteUsersByIdIn(usersIDs);
         //when
 //        mockMvc.perform(post("/users/delete?usersIDs=1&usersIDs=2"))
         mockMvc.perform(post("/users/delete").param("usersIDs", "1", "2"))
                 //then
-                .andExpect(status().isOk());
-
+                .andExpect(status().is3xxRedirection());
     }
 }
