@@ -56,10 +56,18 @@ public class UserServiceImpl implements UserService {
                 .boxed()
                 .collect(Collectors.toList());
         userRepository.deleteUsersByIdIn(usersIDsAsLong);
-/*
-        List<User> checkedUsers = userRepository.findAllById(usersIDsAsLong);
-        userRepository.deleteAll(checkedUsers);
-*/
+    }
+
+    @Override
+    @Transactional
+    public void changeUserPassword(Long id) {
+        final String MAIL_SUBJECT = "Your password was changed";
+        final String PASSWORD = userPasswordGenerator.generateRandomPassword();
+        UserDTO userDTO = userConverter.userToDTO(userRepository.getOne(id));
+        userDTO.setPassword(PASSWORD);
+        User user = userConverter.dtoToUser(userDTO);
+        userRepository.save(user);
+        emailService.sendUserPassword(user.getEmail(), MAIL_SUBJECT, PASSWORD);
     }
 
     @Override
@@ -71,18 +79,6 @@ public class UserServiceImpl implements UserService {
                 .map(userConverter::userToDTO)
                 .collect(Collectors.toList());
         return userDTOs;
-    }
-
-    @Override
-    @Transactional
-    public void changeUserPassword(Long id) {
-        final String MAILSUBJECT = "Your password was changed";
-        final String PASSWORD = userPasswordGenerator.generateRandomPassword();
-        UserDTO userDTO = userConverter.userToDTO(userRepository.getOne(id));
-        userDTO.setPassword(PASSWORD);
-        User user = userConverter.dtoToUser(userDTO);
-        userRepository.save(user);
-        emailService.sendUserPassword(user.getEmail(), MAILSUBJECT, PASSWORD);
     }
 
     @Override

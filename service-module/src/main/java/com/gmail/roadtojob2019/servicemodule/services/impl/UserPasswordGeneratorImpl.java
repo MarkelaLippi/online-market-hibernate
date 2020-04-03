@@ -32,7 +32,13 @@ public class UserPasswordGeneratorImpl implements UserPasswordGenerator {
             CharacterRule splCharRule = new CharacterRule(specialChars);
             splCharRule.setNumberOfCharacters(2);
 
-            return passwordGenerator.generatePassword(10, lowerCaseRule, upperCaseRule, digitRule, splCharRule);
+            return passwordGenerator.generatePassword(
+                    10,
+                    lowerCaseRule,
+                    upperCaseRule,
+                    digitRule,
+                    specialCharsRule,
+                    splCharRule);
         }
     }
 }

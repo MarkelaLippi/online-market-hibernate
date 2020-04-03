@@ -42,13 +42,13 @@ public class UserController {
         if (usersIDs != null) {
             userService.deleteCheckedUsers(usersIDs);
         }
-        return "redirect:/users";
+        return "forward:/users";
     }
 
     @PostMapping("/users/change/password")
     String changeUserPassword(@RequestParam(name = "id") Long id) {
         userService.changeUserPassword(id);
-        return "redirect:/users";
+        return "forward:/users";
     }
 
     @PostMapping("/users/change/role")
