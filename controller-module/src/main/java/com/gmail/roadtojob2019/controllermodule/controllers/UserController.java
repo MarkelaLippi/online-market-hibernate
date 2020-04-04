@@ -4,6 +4,7 @@ import com.gmail.roadtojob2019.repositorymodule.models.Role;
 import com.gmail.roadtojob2019.servicemodule.services.RoleService;
 import com.gmail.roadtojob2019.servicemodule.services.UserService;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO;
+import com.gmail.roadtojob2019.servicemodule.services.exception.OnlineMarketSuchUserNotFoundException;
 import com.gmail.roadtojob2019.servicemodule.services.validators.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -46,8 +47,8 @@ public class UserController {
     }
 
     @PostMapping("/users/change/password")
-    String changeUserPassword(@RequestParam(name = "id") Long id) {
-        userService.changeUserPassword(id);
+    String changeUserPasswordAndSendItByEmail(@RequestParam(name = "id") Long userID) throws OnlineMarketSuchUserNotFoundException {
+        userService.changeUserPasswordAndSendItByEmail(userID);
         return "forward:/users";
     }
 

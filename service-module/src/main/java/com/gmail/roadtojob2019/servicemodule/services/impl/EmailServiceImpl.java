@@ -1,16 +1,16 @@
 package com.gmail.roadtojob2019.servicemodule.services.impl;
 
 import com.gmail.roadtojob2019.servicemodule.services.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
-    @Autowired
-    private JavaMailSender emailSender;
+    private final JavaMailSender emailSender;
 
     @Override
     public void sendUserPassword(String userEmail, String mailSubject, String password) {

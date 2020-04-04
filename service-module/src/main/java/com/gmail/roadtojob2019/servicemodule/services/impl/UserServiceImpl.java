@@ -7,6 +7,7 @@ import com.gmail.roadtojob2019.servicemodule.services.UserPasswordGenerator;
 import com.gmail.roadtojob2019.servicemodule.services.UserService;
 import com.gmail.roadtojob2019.servicemodule.services.converters.UserConverter;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO;
+import com.gmail.roadtojob2019.servicemodule.services.exception.OnlineMarketSuchUserNotFoundException;
 import com.gmail.roadtojob2019.servicemodule.services.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,17 +27,11 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
     private final UserConverter userConverter;
-
     private final UserPasswordGenerator userPasswordGenerator;
-
     private final EmailService emailService;
-
     private final PasswordEncoder passwordEncoder;
-
     private final UserMapper userMapper;
-
 
     @Override
     @Transactional
@@ -60,14 +55,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void changeUserPassword(Long id) {
-        final String MAIL_SUBJECT = "Your password was changed";
-        final String PASSWORD = userPasswordGenerator.generateRandomPassword();
-        UserDTO userDTO = userConverter.userToDTO(userRepository.getOne(id));
-        userDTO.setPassword(PASSWORD);
-        User user = userConverter.dtoToUser(userDTO);
+    public void changeUserPasswordAndSendItByEmail(Long id) throws OnlineMarketSuchUserNotFoundException {
+        final User user = userRepository.findById(id)
+                .orElseThrow(() -> new OnlineMarketSuchUserNotFoundException("User with id = " + id + " was not found"));
+        final String newUserPassword = changeUserPassword(user);
+        SendNewPasswordToUserByEmail(user, newUserPassword);
+    }
+
+    private String changeUserPassword(User user) {
+        final String newUserPassword = userPasswordGenerator.generateRandomPassword();
+        user.setPassword(newUserPassword);
         userRepository.save(user);
-        emailService.sendUserPassword(user.getEmail(), MAIL_SUBJECT, PASSWORD);
+        return newUserPassword;
+    }
+
+    private void SendNewPasswordToUserByEmail(User user, String newUserPassword) {
+        final String userEmail = user.getEmail();
+        final String MAIL_SUBJECT = "Your password was changed";
+        emailService.sendUserPassword(userEmail, MAIL_SUBJECT, newUserPassword);
     }
 
     @Override
