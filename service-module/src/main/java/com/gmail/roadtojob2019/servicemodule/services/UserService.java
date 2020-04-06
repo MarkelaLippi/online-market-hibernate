@@ -15,7 +15,7 @@ public interface UserService {
 
     void changeUserPasswordAndSendItByEmail(Long id) throws OnlineMarketSuchUserNotFoundException;
 
-    void changeUserRole(Long id, String role);
+    void changeUserRole(Long id, String role) throws OnlineMarketSuchUserNotFoundException;
 
     void addUser(UserDTO user);
 

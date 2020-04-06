@@ -53,9 +53,9 @@ public class UserController {
     }
 
     @PostMapping("/users/change/role")
-    String changeUserRole(@RequestParam(name = "id") Long id, @RequestParam(name = "role") String role) {
-        userService.changeUserRole(id, role);
-        return "redirect:/users";
+    String changeUserRole(@RequestParam(name = "id") Long userId, @RequestParam(name = "role") String userRole) throws OnlineMarketSuchUserNotFoundException {
+        userService.changeUserRole(userId, userRole);
+        return "forward:/users";
     }
 
     @GetMapping("/user")

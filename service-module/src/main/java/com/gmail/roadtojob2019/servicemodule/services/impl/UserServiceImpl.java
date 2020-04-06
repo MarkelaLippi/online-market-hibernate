@@ -1,5 +1,6 @@
 package com.gmail.roadtojob2019.servicemodule.services.impl;
 
+import com.gmail.roadtojob2019.repositorymodule.models.Role;
 import com.gmail.roadtojob2019.repositorymodule.models.User;
 import com.gmail.roadtojob2019.repositorymodule.repositories.UserRepository;
 import com.gmail.roadtojob2019.servicemodule.services.EmailService;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -55,9 +57,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void changeUserPasswordAndSendItByEmail(Long id) throws OnlineMarketSuchUserNotFoundException {
-        final User user = userRepository.findById(id)
-                .orElseThrow(() -> new OnlineMarketSuchUserNotFoundException("User with id = " + id + " was not found"));
+    public void changeUserPasswordAndSendItByEmail(Long userId) throws OnlineMarketSuchUserNotFoundException {
+        final User user = userRepository.findById(userId)
+                .orElseThrow(() -> new OnlineMarketSuchUserNotFoundException("User with id = " + userId + " was not found"));
         final String newUserPassword = changeUserPassword(user);
         SendNewPasswordToUserByEmail(user, newUserPassword);
     }
@@ -77,6 +79,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public void changeUserRole(Long userId, String userRole) throws OnlineMarketSuchUserNotFoundException {
+        final User user = userRepository.findById(userId)
+                .orElseThrow(() -> new OnlineMarketSuchUserNotFoundException("User with id = " + userId + " was not found"));
+        final Role newUserRole = Role.valueOf(userRole);
+        user.setRole(newUserRole);
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
     public List<UserDTO> findAllUsers() {
         List<UserDTO> userDTOs = userRepository
                 .findAll()
@@ -84,15 +96,6 @@ public class UserServiceImpl implements UserService {
                 .map(userConverter::userToDTO)
                 .collect(Collectors.toList());
         return userDTOs;
-    }
-
-    @Override
-    @Transactional
-    public void changeUserRole(Long id, String role) {
-        UserDTO userDTO = userConverter.userToDTO(userRepository.getOne(id));
-        userDTO.setRole(role);
-        User user = userConverter.dtoToUser(userDTO);
-        userRepository.save(user);
     }
 
     @Override

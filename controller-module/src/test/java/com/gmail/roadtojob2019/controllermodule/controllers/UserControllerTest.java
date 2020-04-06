@@ -11,11 +11,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -78,6 +82,39 @@ class UserControllerTest {
         willReturn(Optional.empty()).given(userRepository).findById(userId);
         //when
         mockMvc.perform(post("/users/change/password").param("id", userId.toString()))
+                //then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorMessage").value("User with id = " + userId + " was not found"));
+    }
+
+    @Test
+    void testChangeUserRoleIsOk() throws Exception {
+        //given
+        final User user = getUser();
+        final Long userId = 3L;
+        final Optional<User> userBeforeChangingRole = Optional.of(user);
+        willReturn(userBeforeChangingRole).given(userRepository).findById(userId);
+        final String newUserRole = "SALE_USER";
+        MultiValueMap<String,String> requestParameters=new LinkedMultiValueMap<>();
+        requestParameters.add("id", userId.toString());
+        requestParameters.add("role",newUserRole);
+        //when
+        mockMvc.perform(post("/users/change/role").params(requestParameters))
+                //then
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testChangeUserRoleThrowsOnlineMarketSuchUserNotFoundException() throws Exception {
+        //given
+        Long userId=10L;
+        willReturn(Optional.empty()).given(userRepository).findById(userId);
+        final String newUserRole = "SALE_USER";
+        MultiValueMap<String,String> requestParameters=new LinkedMultiValueMap<>();
+        requestParameters.add("id",userId.toString());
+        requestParameters.add("role",newUserRole);
+        //when
+        mockMvc.perform(post("/users/change/role").params(requestParameters))
                 //then
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorMessage").value("User with id = " + userId + " was not found"));
