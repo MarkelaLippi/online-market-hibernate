@@ -28,7 +28,7 @@ public class UserConverterImpl implements UserConverter {
         userDTO.setEmail(user.getEmail());
         userDTO.setPassword(user.getPassword());
         userDTO.setRole(user.getRole().toString());
-        userDTO.setActive(user.isActive());
+        userDTO.setIsActive(user.isActive());
         userDTO.setReviewDTOs(user.getReviews()
                 .stream()
                 .map(reviewConverter::reviewToDTO)
@@ -45,10 +45,10 @@ public class UserConverterImpl implements UserConverter {
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         user.setRole(Role.valueOf(userDTO.getRole()));
-        if (userDTO.getActive() == null) {
+        if (userDTO.getIsActive() == null) {
             user.setActive(true);
         } else {
-            user.setActive(userDTO.getActive());
+            user.setActive(userDTO.getIsActive());
         }
         user.setReviews(userDTO.getReviewDTOs()
                 .stream()

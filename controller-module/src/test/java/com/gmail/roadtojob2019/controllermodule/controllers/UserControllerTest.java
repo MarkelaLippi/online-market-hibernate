@@ -3,7 +3,6 @@ package com.gmail.roadtojob2019.controllermodule.controllers;
 import com.gmail.roadtojob2019.repositorymodule.models.Role;
 import com.gmail.roadtojob2019.repositorymodule.models.User;
 import com.gmail.roadtojob2019.repositorymodule.repositories.UserRepository;
-import org.assertj.core.internal.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +16,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -131,11 +128,12 @@ class UserControllerTest {
         mockMvc.perform(post("/users/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("  {\n" +
-                        "    \"lastName\" : \"Rogov\", \n" +
-                        "    \"name\" : \"Petr\", \n" +
-                        "    \"middleName\" : \"Petrovich\", \n" +
-                        "    \"email\" : \"Rogov@gmail.com\", \n" +
-                        "    \"role\" : \"CUSTOMER_USER\" \n" +
+                        "      \"lastName\" : \"Rogov\", \n" +
+                        "      \"name\" : \"Petr\", \n" +
+                        "      \"middleName\" : \"Petrovich\", \n" +
+                        "      \"email\" : \"Rogov@gmail.com\", \n" +
+                        "      \"password\" : \"1234\", \n" +
+                        "      \"role\" : \"CUSTOMER_USER\" \n" +
                         "   }\n"))
                 .andExpect(status().isOk());
     }

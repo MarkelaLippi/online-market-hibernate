@@ -1,6 +1,7 @@
 package com.gmail.roadtojob2019.servicemodule.services.validators;
 
 import com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -10,13 +11,13 @@ import javax.validation.ConstraintViolation;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class UserValidator implements Validator {
 
     private static final String ONLY_LATIN_SYMBOLS_REGEX = "[a-zA-Z]+";
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
-    @Autowired
-    private javax.validation.Validator validator;
+    private final javax.validation.Validator validator;
 
     @Override
     public boolean supports(Class<?> aClass) {

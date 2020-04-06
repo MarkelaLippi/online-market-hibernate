@@ -89,6 +89,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public void addUser(UserDTO userDTO) {
+        final String userPassword = userDTO.getPassword();
+        final String encodedUserPassword = passwordEncoder.encode(userPassword);
+        final User user = userMapper.userDtoToUser(userDTO);
+        user.setPassword(encodedUserPassword);
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
     public List<UserDTO> findAllUsers() {
         List<UserDTO> userDTOs = userRepository
                 .findAll()
@@ -96,14 +106,6 @@ public class UserServiceImpl implements UserService {
                 .map(userConverter::userToDTO)
                 .collect(Collectors.toList());
         return userDTOs;
-    }
-
-    @Override
-    @Transactional
-    public void addUser(UserDTO userDTO) {
-        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        User user = userConverter.dtoToUser(userDTO);
-        userRepository.save(user);
     }
 
     @Override

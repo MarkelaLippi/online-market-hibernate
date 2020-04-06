@@ -59,13 +59,13 @@ public class UserController {
     }
 
     @PostMapping("/users/add")
-    String addUser(@Valid @ModelAttribute @RequestBody UserDTO userDTO, BindingResult bindingResult) {
+    String addUser(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
         userValidator.validate(userDTO, bindingResult);
         if (bindingResult.hasErrors()) {
-            return "redirect:/user";
+            return "forward:/user";
         } else {
             userService.addUser(userDTO);
-            return "redirect:/users";
+            return "forward:/users";
         }
     }
 
