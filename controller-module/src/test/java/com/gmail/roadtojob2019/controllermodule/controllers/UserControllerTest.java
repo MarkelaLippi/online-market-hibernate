@@ -3,12 +3,14 @@ package com.gmail.roadtojob2019.controllermodule.controllers;
 import com.gmail.roadtojob2019.repositorymodule.models.Role;
 import com.gmail.roadtojob2019.repositorymodule.models.User;
 import com.gmail.roadtojob2019.repositorymodule.repositories.UserRepository;
+import org.assertj.core.internal.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
@@ -91,13 +93,13 @@ class UserControllerTest {
     void testChangeUserRoleIsOk() throws Exception {
         //given
         final User user = getUser();
-        final Long userId = 3L;
+        final Long userId = user.getId();
         final Optional<User> userBeforeChangingRole = Optional.of(user);
         willReturn(userBeforeChangingRole).given(userRepository).findById(userId);
         final String newUserRole = "SALE_USER";
-        MultiValueMap<String,String> requestParameters=new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> requestParameters = new LinkedMultiValueMap<>();
         requestParameters.add("id", userId.toString());
-        requestParameters.add("role",newUserRole);
+        requestParameters.add("role", newUserRole);
         //when
         mockMvc.perform(post("/users/change/role").params(requestParameters))
                 //then
@@ -107,17 +109,35 @@ class UserControllerTest {
     @Test
     void testChangeUserRoleThrowsOnlineMarketSuchUserNotFoundException() throws Exception {
         //given
-        Long userId=10L;
+        Long userId = 10L;
         willReturn(Optional.empty()).given(userRepository).findById(userId);
         final String newUserRole = "SALE_USER";
-        MultiValueMap<String,String> requestParameters=new LinkedMultiValueMap<>();
-        requestParameters.add("id",userId.toString());
-        requestParameters.add("role",newUserRole);
+        MultiValueMap<String, String> requestParameters = new LinkedMultiValueMap<>();
+        requestParameters.add("id", userId.toString());
+        requestParameters.add("role", newUserRole);
         //when
         mockMvc.perform(post("/users/change/role").params(requestParameters))
                 //then
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorMessage").value("User with id = " + userId + " was not found"));
+    }
+
+    @Test
+    void testAddUserIsOk() throws Exception {
+        //given
+        final User newUser = getUser();
+        willReturn(newUser).given(userRepository).save(newUser);
+        //when
+        mockMvc.perform(post("/users/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("  {\n" +
+                        "    \"lastName\" : \"Rogov\", \n" +
+                        "    \"name\" : \"Petr\", \n" +
+                        "    \"middleName\" : \"Petrovich\", \n" +
+                        "    \"email\" : \"Rogov@gmail.com\", \n" +
+                        "    \"role\" : \"CUSTOMER_USER\" \n" +
+                        "   }\n"))
+                .andExpect(status().isOk());
     }
 
     private User getUser() {

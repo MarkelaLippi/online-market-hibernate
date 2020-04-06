@@ -58,15 +58,8 @@ public class UserController {
         return "forward:/users";
     }
 
-    @GetMapping("/user")
-    String getAddUserPage(Model model) {
-        UserDTO user = new UserDTO();
-        model.addAttribute("user", user);
-        return "addUserPage";
-    }
-
     @PostMapping("/users/add")
-    String addUser(@Valid @ModelAttribute UserDTO userDTO, BindingResult bindingResult) {
+    String addUser(@Valid @ModelAttribute @RequestBody UserDTO userDTO, BindingResult bindingResult) {
         userValidator.validate(userDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             return "redirect:/user";
@@ -74,5 +67,12 @@ public class UserController {
             userService.addUser(userDTO);
             return "redirect:/users";
         }
+    }
+
+    @GetMapping("/user")
+    String getAddUserPage(Model model) {
+        UserDTO user = new UserDTO();
+        model.addAttribute("user", user);
+        return "addUserPage";
     }
 }
