@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ReviewService {
-    Page<ReviewDTO> findAllReviewsPaginated(int pageNumber, int pageSize);
+    Page<ReviewDTO> getPageOfReviews(int pageNumber, int pageSize);
 
     void deleteCheckedReviews(int[] ids);
 }

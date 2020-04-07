@@ -1,13 +1,15 @@
 package com.gmail.roadtojob2019.servicemodule.services.impl;
 
-import com.gmail.roadtojob2019.repositorymodule.repositories.ReviewRepository;
 import com.gmail.roadtojob2019.repositorymodule.models.Review;
+import com.gmail.roadtojob2019.repositorymodule.repositories.ReviewRepository;
 import com.gmail.roadtojob2019.servicemodule.services.ReviewService;
 import com.gmail.roadtojob2019.servicemodule.services.converters.ReviewConverter;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.ReviewDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.gmail.roadtojob2019.servicemodule.services.mappers.ReviewMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,17 +19,18 @@ import java.util.stream.Collectors;
 
 
 @Service
+@RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
-    @Autowired
-    private ReviewRepository reviewRepository;
-    @Autowired
-    private ReviewConverter reviewConverter;
+    private final ReviewRepository reviewRepository;
+    private final ReviewConverter reviewConverter;
+    private final ReviewMapper reviewMapper;
 
     @Override
     @Transactional
-    public Page<ReviewDTO> findAllReviewsPaginated(int pageNumber, int pageSize) {
+    public Page<ReviewDTO> getPageOfReviews(int pageNumber, int pageSize) {
+        Pageable pageParameters = PageRequest.of(pageNumber - 1, pageSize);
         return reviewRepository
-                .findAll(PageRequest.of(pageNumber - 1, pageSize))
+                .findAll(pageParameters)
                 .map(reviewConverter::reviewToDTO);
     }
 
