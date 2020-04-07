@@ -3,11 +3,13 @@ package com.gmail.roadtojob2019.repositorymodule.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "reviews")
 public class Review {

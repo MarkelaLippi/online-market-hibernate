@@ -53,10 +53,10 @@ class UserControllerTest {
     @Test
     void testDeleteCheckedUsersIsOk() throws Exception {
         //given
-        final List<Long> usersIDs = List.of(1L, 2L);
+        final List<Long> usersIDs = List.of(3L, 4L);
         willDoNothing().given(userRepository).deleteUsersByIdIn(usersIDs);
         //when
-        mockMvc.perform(post("/users/delete").param("usersIDs", "1", "2"))
+        mockMvc.perform(post("/users/delete").param("usersIDs", "3", "4"))
                 //then
                 .andExpect(status().isOk());
     }
@@ -139,17 +139,18 @@ class UserControllerTest {
     }
 
     private User getUser() {
-        return new User(1L,
-                "Rogov",
-                "Petr",
-                "Petrovich",
-                "Rogov@gmail.com",
-                "1234",
-                Role.ADMINISTRATOR,
-                true,
-                Collections.emptySet(),
-                Collections.emptySet(),
-                Collections.emptySet()
-        );
+        return User.builder()
+                .id(1L)
+                .lastName("Rogov")
+                .name("Petr")
+                .middleName("Petrovich")
+                .email("Rogov@gmail.com")
+                .password("1234")
+                .role(Role.ADMINISTRATOR)
+                .isActive(true)
+                .reviews(Collections.emptySet())
+                .articles(Collections.emptySet())
+                .comments(Collections.emptySet())
+                .build();
     }
 }
