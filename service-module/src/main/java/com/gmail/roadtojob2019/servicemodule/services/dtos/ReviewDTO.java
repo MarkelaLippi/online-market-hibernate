@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -14,7 +15,7 @@ import java.util.Objects;
 public class ReviewDTO {
     private Long id;
     private String content;
-    private Date date;
+    private LocalDateTime date;
     private boolean isActive;
     private String userLastName;
     private String userName;

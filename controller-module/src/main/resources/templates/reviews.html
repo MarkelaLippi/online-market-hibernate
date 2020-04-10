@@ -21,7 +21,7 @@
         <td><span th:text="${review.userMiddleName}"></span></td>
         <td><span th:text="${review.userName}"></span></td>
         <td><span th:text="${review.content}"></span></td>
-        <td><span th:text="${#dates.format(review.date, 'dd-MM-yyyy')}"></span></td>
+        <td><span th:text="${#temporals.format(review.date, 'dd-MM-yyyy HH:mm')}"></span></td>
         <td>
             <input type="checkbox" name="shown" th:value="${review.id}">
         </td>

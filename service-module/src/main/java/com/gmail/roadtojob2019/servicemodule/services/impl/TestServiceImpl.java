@@ -6,6 +6,8 @@ import com.gmail.roadtojob2019.repositorymodule.models.User;
 import com.gmail.roadtojob2019.servicemodule.services.TestService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 
@@ -34,7 +36,7 @@ public class TestServiceImpl implements TestService {
         return Review.builder()
                 .id(1L)
                 .content("I would like to notice...")
-                .date(new Date())
+                .date(LocalDateTime.of(2020,4,10, 15, 43, 25))
                 .isActive(true)
                 .user(user)
                 .build();
