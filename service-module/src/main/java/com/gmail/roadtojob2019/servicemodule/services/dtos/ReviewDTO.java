@@ -16,5 +16,7 @@ public class ReviewDTO {
     private String content;
     private Date date;
     private boolean isActive;
-    private UserDTO userDTO;
+    private String userLastName;
+    private String userName;
+    private String userMiddleName;
 }

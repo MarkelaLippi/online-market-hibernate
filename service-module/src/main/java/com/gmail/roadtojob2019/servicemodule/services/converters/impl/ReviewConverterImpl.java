@@ -27,7 +27,7 @@ public class ReviewConverterImpl implements ReviewConverter {
         userDTO.setLastName(user.getLastName());
         userDTO.setName(user.getName());
         userDTO.setMiddleName(user.getMiddleName());
-        reviewDTO.setUserDTO(userDTO);
+//        reviewDTO.setUserDTO(userDTO);
         return reviewDTO;
     }
 
@@ -38,7 +38,7 @@ public class ReviewConverterImpl implements ReviewConverter {
         review.setContent(reviewDTO.getContent());
         review.setDate(reviewDTO.getDate());
         review.setActive(reviewDTO.isActive());
-        review.setUser(userConverter.dtoToUser(reviewDTO.getUserDTO()));
+//        review.setUser(userConverter.dtoToUser(reviewDTO.getUserDTO()));
         return review;
     }
 }

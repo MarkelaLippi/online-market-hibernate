@@ -17,9 +17,9 @@
         <th>Show</th>
     </tr>
     <tr th:each="review : ${reviews.content}">
-        <td><span th:text="${review.userDTO.lastName}"></span></td>
-        <td><span th:text="${review.userDTO.middleName}"></span></td>
-        <td><span th:text="${review.userDTO.name}"></span></td>
+        <td><span th:text="${review.userLastName}"></span></td>
+        <td><span th:text="${review.userMiddleName}"></span></td>
+        <td><span th:text="${review.userName}"></span></td>
         <td><span th:text="${review.content}"></span></td>
         <td><span th:text="${#dates.format(review.date, 'dd-MM-yyyy')}"></span></td>
         <td>

@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
+
     private final ReviewRepository reviewRepository;
     private final ReviewConverter reviewConverter;
     private final ReviewMapper reviewMapper;
@@ -31,7 +32,7 @@ public class ReviewServiceImpl implements ReviewService {
         Pageable pageParameters = PageRequest.of(pageNumber - 1, pageSize);
         return reviewRepository
                 .findAll(pageParameters)
-                .map(reviewConverter::reviewToDTO);
+                .map(reviewMapper::reviewToReviewDto);
     }
 
     @Override
