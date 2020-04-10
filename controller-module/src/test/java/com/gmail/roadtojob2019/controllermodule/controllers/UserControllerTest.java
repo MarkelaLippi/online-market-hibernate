@@ -1,8 +1,8 @@
 package com.gmail.roadtojob2019.controllermodule.controllers;
 
-import com.gmail.roadtojob2019.repositorymodule.models.Role;
 import com.gmail.roadtojob2019.repositorymodule.models.User;
 import com.gmail.roadtojob2019.repositorymodule.repositories.UserRepository;
+import com.gmail.roadtojob2019.servicemodule.services.TestService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private TestService testService;
 
     @Mock
     private UserRepository userRepository;
@@ -40,7 +41,7 @@ class UserControllerTest {
     void testGetPageOfUsersSortedByEmailIsOk() throws Exception {
         //given
         final Pageable pageParameters = PageRequest.of(1, 10, Sort.Direction.ASC, "email");
-        final User user = getUser();
+        final User user = testService.getUser();
         final List<User> users = List.of(user);
         final Page<User> page = new PageImpl<User>(users, pageParameters, 1L);
         willReturn(page).given(userRepository).findAll(pageParameters);
@@ -64,7 +65,7 @@ class UserControllerTest {
     @Test
     void testChangeUserPasswordAndSendItByEmailIsOk() throws Exception {
         //given
-        final User user = getUser();
+        final User user = testService.getUser();
         final Long userId = user.getId();
         final Optional<User> userBeforeChangingPassword = Optional.of(user);
         willReturn(userBeforeChangingPassword).given(userRepository).findById(userId);
@@ -89,7 +90,7 @@ class UserControllerTest {
     @Test
     void testChangeUserRoleIsOk() throws Exception {
         //given
-        final User user = getUser();
+        final User user = testService.getUser();
         final Long userId = user.getId();
         final Optional<User> userBeforeChangingRole = Optional.of(user);
         willReturn(userBeforeChangingRole).given(userRepository).findById(userId);
@@ -122,7 +123,7 @@ class UserControllerTest {
     @Test
     void testAddUserIsOk() throws Exception {
         //given
-        final User newUser = getUser();
+        final User newUser = testService.getUser();
         willReturn(newUser).given(userRepository).save(newUser);
         //when
         mockMvc.perform(post("/users/add")
@@ -136,21 +137,5 @@ class UserControllerTest {
                         "      \"role\" : \"CUSTOMER_USER\" \n" +
                         "   }\n"))
                 .andExpect(status().isOk());
-    }
-
-    private User getUser() {
-        return User.builder()
-                .id(1L)
-                .lastName("Rogov")
-                .name("Petr")
-                .middleName("Petrovich")
-                .email("Rogov@gmail.com")
-                .password("1234")
-                .role(Role.ADMINISTRATOR)
-                .isActive(true)
-                .reviews(Collections.emptySet())
-                .articles(Collections.emptySet())
-                .comments(Collections.emptySet())
-                .build();
     }
 }

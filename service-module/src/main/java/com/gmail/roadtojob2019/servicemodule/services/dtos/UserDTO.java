@@ -20,5 +20,4 @@ public class UserDTO {
     private String role;
     private Boolean isActive;
     private Set<ReviewDTO> reviewDTOs = new HashSet<>();
-
 }
