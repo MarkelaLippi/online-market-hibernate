@@ -1,5 +1,6 @@
 package com.gmail.roadtojob2019.servicemodule.services.impl;
 
+import com.gmail.roadtojob2019.repositorymodule.models.Article;
 import com.gmail.roadtojob2019.repositorymodule.models.Review;
 import com.gmail.roadtojob2019.repositorymodule.models.Role;
 import com.gmail.roadtojob2019.repositorymodule.models.User;
@@ -36,9 +37,22 @@ public class TestServiceImpl implements TestService {
         return Review.builder()
                 .id(1L)
                 .content("I would like to notice...")
-                .date(LocalDateTime.of(2020,4,10, 15, 43, 25))
+                .date(LocalDateTime.of(2020, 4, 10, 15, 43, 25))
                 .isActive(true)
                 .user(user)
+                .build();
+    }
+
+    @Override
+    public Article getArticle(User user) {
+        return Article.builder()
+                .id(1L)
+                .title("Title of article")
+                .content("Content of article")
+                .description("Description of article")
+                .date(new Date())
+                .user(user)
+                .comments(Collections.emptySet())
                 .build();
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface ArticleService {
-    Page<ArticleDTO> findAllArticlesPaginatedAndSortedByDate(int pageNumber, int pageSize);
+    Page<ArticleDTO> getPageOfArticlesSortedByDate(int pageNumber, int pageSize);
 
     ArticleDTO findArticleById(Long id);
 

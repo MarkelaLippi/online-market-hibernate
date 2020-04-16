@@ -5,12 +5,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "articles")
 public class Article {

@@ -18,8 +18,8 @@
     <tr th:each="article : ${articles.content}">
         <td><span th:text="${#dates.format(article.date, 'dd-MM-yyyy')}"></span></td>
         <td><span th:text="${article.title}"></span></td>
-        <td><span th:text="${article.userDTO.name}"></span></td>
-        <td><span th:text="${article.userDTO.lastName}"></span></td>
+        <td><span th:text="${article.userName}"></span></td>
+        <td><span th:text="${article.userLastName}"></span></td>
         <td><span th:text="${article.description}"></span></td>
         <td>
             <a th:href="@{/article?id={id}(id=${article.id})}">More...</a>

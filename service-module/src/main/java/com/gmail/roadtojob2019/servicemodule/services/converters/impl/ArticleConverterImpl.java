@@ -35,13 +35,6 @@ public class ArticleConverterImpl implements ArticleConverter {
         UserDTO userDTO = new UserDTO();
         userDTO.setName(user.getName());
         userDTO.setLastName(user.getLastName());
-        articleDTO.setUserDTO(userDTO);
-        Set<CommentDTO> commentDTOs = article.getComments()
-                .stream()
-                .map(commentConverter::commentToDTO)
-                .sorted(Comparator.comparing(CommentDTO::getDate).reversed())
-                .collect(Collectors.toCollection(LinkedHashSet::new));
-        articleDTO.setCommentDTOs(commentDTOs);
         return articleDTO;
     }
 
