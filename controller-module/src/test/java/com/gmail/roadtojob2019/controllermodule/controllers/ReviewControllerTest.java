@@ -17,8 +17,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -45,6 +47,18 @@ class ReviewControllerTest {
         willReturn(pageOfReviews).given(reviewRepository).findAll(pageParameters);
         //when
         mockMvc.perform(get("/reviews"))
+                //then
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testDeleteCheckedReviews() throws Exception {
+        //given
+        final List<Long> reviewsIds = List.of(1L, 2L);
+        willDoNothing().given(reviewRepository).deleteReviewsByIdIn(reviewsIds);
+        //when
+        mockMvc.perform(post("/reviews/delete")
+                .param("reviewsIDs", "1", "2"))
                 //then
                 .andExpect(status().isOk());
     }

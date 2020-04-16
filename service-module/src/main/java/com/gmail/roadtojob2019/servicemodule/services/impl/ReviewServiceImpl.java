@@ -1,6 +1,5 @@
 package com.gmail.roadtojob2019.servicemodule.services.impl;
 
-import com.gmail.roadtojob2019.repositorymodule.models.Review;
 import com.gmail.roadtojob2019.repositorymodule.repositories.ReviewRepository;
 import com.gmail.roadtojob2019.servicemodule.services.ReviewService;
 import com.gmail.roadtojob2019.servicemodule.services.converters.ReviewConverter;
@@ -37,13 +36,11 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public void deleteCheckedReviews(int[] ids) {
-        List<Long> idsAsLong = Arrays.stream(ids)
+    public void deleteCheckedReviews(int[] reviewsIDs) {
+        List<Long> reviewsIDsAsLong = Arrays.stream(reviewsIDs)
                 .asLongStream()
                 .boxed()
                 .collect(Collectors.toList());
-
-        List<Review> checkedReviews = reviewRepository.findAllById(idsAsLong);
-        reviewRepository.deleteAll(checkedReviews);
+        reviewRepository.deleteReviewsByIdIn(reviewsIDsAsLong);
     }
 }

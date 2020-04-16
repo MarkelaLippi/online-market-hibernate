@@ -30,11 +30,10 @@ public class ReviewController {
     }
 
     @PostMapping("/reviews/delete")
-    String deleteCheckedReviews(@RequestParam(required = false, name = "ids") int[] ids) {
-        if (ids == null) {
-            return "redirect:/reviews";
+    String deleteCheckedReviews(@RequestParam int[] reviewsIDs) {
+        if (reviewsIDs != null) {
+            reviewService.deleteCheckedReviews(reviewsIDs);
         }
-        reviewService.deleteCheckedReviews(ids);
-        return "redirect:/reviews";
+        return "forward:/reviews";
     }
 }
