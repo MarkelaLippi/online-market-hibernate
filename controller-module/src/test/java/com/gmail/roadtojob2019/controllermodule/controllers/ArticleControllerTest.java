@@ -14,7 +14,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.floatThat;
 import static org.mockito.BDDMockito.willReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,7 +34,7 @@ class ArticleControllerTest {
     private ArticleRepository articleRepository;
 
     @Test
-    void getPageOfArticlesSortedByDate() throws Exception {
+    void testGetPageOfArticlesSortedByDate() throws Exception {
         //given
         final int pageNumber = 1;
         final int pageSize = 10;
@@ -52,6 +54,17 @@ class ArticleControllerTest {
     }
 
     @Test
-    void getArticle() {
+    void testGetArticle() throws Exception {
+        //given
+        final Long articleID=1L;
+        final User user = testService.getUser();
+        final Article article = testService.getArticle(user);
+        final Optional<Article> requiredArticle = Optional.of(article);
+        willReturn(requiredArticle).given(articleRepository).findById(articleID);
+        //when
+        mockMvc.perform(get("/article")
+                .param("articleID", "1"))
+                //then
+                .andExpect(status().isOk());
     }
 }

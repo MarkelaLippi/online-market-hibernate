@@ -26,7 +26,7 @@ public class CommentConverterImpl implements CommentConverter {
         UserDTO userDTO = new UserDTO();
         userDTO.setName(user.getName());
         userDTO.setLastName(user.getLastName());
-        commentDTO.setUserDTO(userDTO);
+//        commentDTO.setUserDTO(userDTO);
         return commentDTO;
     }
 
@@ -36,8 +36,10 @@ public class CommentConverterImpl implements CommentConverter {
         comment.setId(commentDTO.getId());
         comment.setDate(commentDTO.getDate());
         comment.setContent(commentDTO.getContent());
+/*
         comment.setUser(userConverter.dtoToUser(commentDTO.getUserDTO()));
         comment.setArticle(articleConverter.dtoToArticle(commentDTO.getArticleDTO()));
+*/
         return comment;
     }
 }

@@ -15,8 +15,8 @@
         <th>Content</th>
     </tr>
     <tr th:object="${article}">
-        <td><span th:text="*{userDTO.name}"></span></td>
-        <td><span th:text="*{userDTO.lastName}"></span></td>
+        <td><span th:text="*{userName}"></span></td>
+        <td><span th:text="*{userLastName}"></span></td>
         <td><span th:text="*{#dates.format(date, 'dd-MM-yyyy')}"></span></td>
         <td><span th:text="*{content}"></span></td>
     </tr>
@@ -29,9 +29,9 @@
         <th>Date</th>
         <th>Content</th>
     </tr>
-    <tr th:each="comment : ${article.commentDTOs}">
-        <td><span th:text="${comment.userDTO.name}"></span></td>
-        <td><span th:text="${comment.userDTO.lastName}"></span></td>
+    <tr th:each="comment : ${article.comments}">
+        <td><span th:text="${comment.userName}"></span></td>
+        <td><span th:text="${comment.userLastName}"></span></td>
         <td><span th:text="${#dates.format(comment.date, 'dd-MM-yyyy')}"></span></td>
         <td><span th:text="${comment.content}"></span></td>
     </tr>

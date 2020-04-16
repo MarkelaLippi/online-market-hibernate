@@ -2,6 +2,7 @@ package com.gmail.roadtojob2019.controllermodule.controllers.restcontrollers;
 
 import com.gmail.roadtojob2019.servicemodule.services.ArticleService;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.ArticleDTO;
+import com.gmail.roadtojob2019.servicemodule.services.exception.OnlineMarketSuchArticleNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +20,8 @@ public class RestApiArticleController {
     }
 
     @GetMapping("/{id}")
-    ArticleDTO getArticle(@PathVariable Long id) {
-        return articleService.findArticleById(id);
+    ArticleDTO getArticle(@PathVariable Long id) throws OnlineMarketSuchArticleNotFoundException {
+        return articleService.getArticleById(id);
     }
 
     @PostMapping

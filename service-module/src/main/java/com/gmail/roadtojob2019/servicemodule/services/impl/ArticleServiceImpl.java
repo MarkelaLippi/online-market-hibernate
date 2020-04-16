@@ -1,9 +1,12 @@
 package com.gmail.roadtojob2019.servicemodule.services.impl;
 
+import com.gmail.roadtojob2019.repositorymodule.models.Article;
 import com.gmail.roadtojob2019.repositorymodule.repositories.ArticleRepository;
 import com.gmail.roadtojob2019.servicemodule.services.ArticleService;
 import com.gmail.roadtojob2019.servicemodule.services.converters.ArticleConverter;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.ArticleDTO;
+import com.gmail.roadtojob2019.servicemodule.services.exception.OnlineMarketSuchArticleNotFoundException;
+import com.gmail.roadtojob2019.servicemodule.services.exception.OnlineMarketSuchUserNotFoundException;
 import com.gmail.roadtojob2019.servicemodule.services.mappers.ArticleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +32,7 @@ public class ArticleServiceImpl implements ArticleService {
     public Page<ArticleDTO> getPageOfArticlesSortedByDate(int pageNumber, int pageSize) {
         final Sort.Direction sortDirection = Sort.Direction.DESC;
         final String sortField = "date";
-        Pageable pageParameters = PageRequest.of(pageNumber - 1, pageSize, sortDirection, sortField);
+        final Pageable pageParameters = PageRequest.of(pageNumber - 1, pageSize, sortDirection, sortField);
         return articleRepository
                 .findAll(pageParameters)
                 .map(articleMapper::articleToArticleDto);
@@ -37,8 +40,10 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public ArticleDTO findArticleById(Long id) {
-        return articleConverter.articleToDTO(articleRepository.findById(id).orElseThrow());
+    public ArticleDTO getArticleById(Long articleID) throws OnlineMarketSuchArticleNotFoundException {
+        final Article article = articleRepository.findById(articleID)
+                .orElseThrow(() -> new OnlineMarketSuchArticleNotFoundException("Article with id = " + articleID + " was not found"));
+        return articleMapper.articleToArticleDto(article);
     }
 
     @Override

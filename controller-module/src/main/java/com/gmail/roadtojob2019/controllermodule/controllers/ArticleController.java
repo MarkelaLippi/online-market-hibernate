@@ -2,6 +2,7 @@ package com.gmail.roadtojob2019.controllermodule.controllers;
 
 import com.gmail.roadtojob2019.servicemodule.services.ArticleService;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.ArticleDTO;
+import com.gmail.roadtojob2019.servicemodule.services.exception.OnlineMarketSuchArticleNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -29,9 +30,9 @@ public class ArticleController {
     }
 
     @GetMapping("/article")
-    String getArticle(@RequestParam Long id, Model model) {
-        ArticleDTO articleDTO = articleService.findArticleById(id);
-        model.addAttribute("article", articleDTO);
-        return "articlePage";
+    String getArticle(@RequestParam Long articleID, Model model) throws OnlineMarketSuchArticleNotFoundException {
+        ArticleDTO article = articleService.getArticleById(articleID);
+        model.addAttribute("article", article);
+        return "article";
     }
 }
