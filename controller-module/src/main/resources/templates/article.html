@@ -17,7 +17,7 @@
     <tr th:object="${article}">
         <td><span th:text="*{userName}"></span></td>
         <td><span th:text="*{userLastName}"></span></td>
-        <td><span th:text="*{#dates.format(date, 'dd-MM-yyyy')}"></span></td>
+        <td><span th:text="*{#temporals.format(date, 'dd-MM-yyyy HH:mm')}"></span></td>
         <td><span th:text="*{content}"></span></td>
     </tr>
 </table>
@@ -32,7 +32,7 @@
     <tr th:each="comment : ${article.comments}">
         <td><span th:text="${comment.userName}"></span></td>
         <td><span th:text="${comment.userLastName}"></span></td>
-        <td><span th:text="${#dates.format(comment.date, 'dd-MM-yyyy')}"></span></td>
+        <td><span th:text="${#temporals.format(comment.date, 'dd-MM-yyyy HH:mm')}"></span></td>
         <td><span th:text="${comment.content}"></span></td>
     </tr>
 </table>

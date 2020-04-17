@@ -1,6 +1,7 @@
 package com.gmail.roadtojob2019.controllermodule.controllers;
 
 import com.gmail.roadtojob2019.repositorymodule.models.Article;
+import com.gmail.roadtojob2019.repositorymodule.models.Comment;
 import com.gmail.roadtojob2019.repositorymodule.models.User;
 import com.gmail.roadtojob2019.repositorymodule.repositories.ArticleRepository;
 import com.gmail.roadtojob2019.servicemodule.services.TestService;
@@ -15,10 +16,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.floatThat;
 import static org.mockito.BDDMockito.willReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -34,7 +37,7 @@ class ArticleControllerTest {
     private ArticleRepository articleRepository;
 
     @Test
-    void testGetPageOfArticlesSortedByDate() throws Exception {
+    void testGetPageOfArticlesSortedByDateIsOk() throws Exception {
         //given
         final int pageNumber = 1;
         final int pageSize = 10;
@@ -54,17 +57,32 @@ class ArticleControllerTest {
     }
 
     @Test
-    void testGetArticle() throws Exception {
+    void testGetArticleByIdWithCommentsSortedByDateIsOk() throws Exception {
         //given
-        final Long articleID=1L;
+        final Long articleID = 1L;
         final User user = testService.getUser();
         final Article article = testService.getArticle(user);
+        final Comment comment = testService.getComment(user);
+        article.setComments(Set.of(comment));
         final Optional<Article> requiredArticle = Optional.of(article);
         willReturn(requiredArticle).given(articleRepository).findById(articleID);
         //when
         mockMvc.perform(get("/article")
-                .param("articleID", "1"))
+                .param("articleID", articleID.toString()))
                 //then
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void testGetArticleByIdWithCommentsSortedByDateThrowsOnlineMarketSuchArticleNotFoundException() throws Exception {
+        //given
+        final Long articleID = 100L;
+        willReturn(Optional.empty()).given(articleRepository).findById(articleID);
+        //when
+        mockMvc.perform(get("/article")
+                .param("articleID", articleID.toString()))
+                //then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorMessage").value("Article with id = " + articleID + " was not found"));
     }
 }

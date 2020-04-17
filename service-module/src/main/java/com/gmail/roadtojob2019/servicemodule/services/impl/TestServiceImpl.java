@@ -1,9 +1,6 @@
 package com.gmail.roadtojob2019.servicemodule.services.impl;
 
-import com.gmail.roadtojob2019.repositorymodule.models.Article;
-import com.gmail.roadtojob2019.repositorymodule.models.Review;
-import com.gmail.roadtojob2019.repositorymodule.models.Role;
-import com.gmail.roadtojob2019.repositorymodule.models.User;
+import com.gmail.roadtojob2019.repositorymodule.models.*;
 import com.gmail.roadtojob2019.servicemodule.services.TestService;
 import org.springframework.stereotype.Service;
 
@@ -50,9 +47,19 @@ public class TestServiceImpl implements TestService {
                 .title("Title of article")
                 .content("Content of article")
                 .description("Description of article")
-                .date(new Date())
+                .date(LocalDateTime.now())
                 .user(user)
                 .comments(Collections.emptySet())
+                .build();
+    }
+
+    @Override
+    public Comment getComment(User user) {
+        return Comment.builder()
+                .id(1L)
+                .date(LocalDateTime.now())
+                .content("Content of comment")
+                .user(user)
                 .build();
     }
 }

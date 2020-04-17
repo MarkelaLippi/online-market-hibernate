@@ -14,7 +14,8 @@ import java.util.logging.Level;
 public class ExceptionControllerAdvice {
 
     @ExceptionHandler({
-            OnlineMarketSuchUserNotFoundException.class
+            OnlineMarketSuchUserNotFoundException.class,
+            OnlineMarketSuchArticleNotFoundException.class
     })
     private ResponseEntity<ErrorMessage> handleBadRequest(final Exception e) {
         log.log(Level.SEVERE, e.getMessage(), e);

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
 
+import static java.util.Comparator.comparing;
+
 @Controller
 @RequiredArgsConstructor
 public class ArticleController {
@@ -22,16 +24,16 @@ public class ArticleController {
     String getPageOfArticlesSortedByDate(@RequestParam Optional<Integer> pageNumber,
                                          @RequestParam Optional<Integer> pageSize,
                                          Model model) {
-        Integer currentPageNumber = pageNumber.orElse(1);
-        Integer currentPageSize = pageSize.orElse(10);
-        Page<ArticleDTO> articles = articleService.getPageOfArticlesSortedByDate(currentPageNumber, currentPageSize);
+        final Integer currentPageNumber = pageNumber.orElse(1);
+        final Integer currentPageSize = pageSize.orElse(10);
+        final Page<ArticleDTO> articles = articleService.getPageOfArticlesSortedByDate(currentPageNumber, currentPageSize);
         model.addAttribute("articles", articles);
         return "articles";
     }
 
     @GetMapping("/article")
-    String getArticle(@RequestParam Long articleID, Model model) throws OnlineMarketSuchArticleNotFoundException {
-        ArticleDTO article = articleService.getArticleById(articleID);
+    String getArticleByIdWithCommentsSortedByDate(@RequestParam Long articleID, Model model) throws OnlineMarketSuchArticleNotFoundException {
+        final ArticleDTO article = articleService.getArticleByIdWithCommentsSortedByDate(articleID);
         model.addAttribute("article", article);
         return "article";
     }

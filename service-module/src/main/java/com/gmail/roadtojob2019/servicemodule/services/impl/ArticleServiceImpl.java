@@ -5,11 +5,10 @@ import com.gmail.roadtojob2019.repositorymodule.repositories.ArticleRepository;
 import com.gmail.roadtojob2019.servicemodule.services.ArticleService;
 import com.gmail.roadtojob2019.servicemodule.services.converters.ArticleConverter;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.ArticleDTO;
+import com.gmail.roadtojob2019.servicemodule.services.dtos.CommentDTO;
 import com.gmail.roadtojob2019.servicemodule.services.exception.OnlineMarketSuchArticleNotFoundException;
-import com.gmail.roadtojob2019.servicemodule.services.exception.OnlineMarketSuchUserNotFoundException;
 import com.gmail.roadtojob2019.servicemodule.services.mappers.ArticleMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +16,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparing;
 
 @Service
 @RequiredArgsConstructor
@@ -40,10 +43,21 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public ArticleDTO getArticleById(Long articleID) throws OnlineMarketSuchArticleNotFoundException {
+    public ArticleDTO getArticleByIdWithCommentsSortedByDate(Long articleID) throws OnlineMarketSuchArticleNotFoundException {
         final Article article = articleRepository.findById(articleID)
                 .orElseThrow(() -> new OnlineMarketSuchArticleNotFoundException("Article with id = " + articleID + " was not found"));
-        return articleMapper.articleToArticleDto(article);
+        final ArticleDTO articleDTO = articleMapper.articleToArticleDto(article);
+        final Set<CommentDTO> nonSortedByDateComments = articleDTO.getComments();
+        final Set<CommentDTO> sortedByDateComments = sortCommentsByDate(nonSortedByDateComments);
+        articleDTO.setComments(sortedByDateComments);
+        return articleDTO;
+    }
+
+    private Set<CommentDTO> sortCommentsByDate(Set<CommentDTO> nonSortedByDateComments) {
+        return nonSortedByDateComments
+                    .stream()
+                    .sorted(comparing(CommentDTO::getDate).reversed())
+                    .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Override

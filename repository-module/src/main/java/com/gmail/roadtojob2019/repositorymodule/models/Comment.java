@@ -3,12 +3,14 @@ package com.gmail.roadtojob2019.repositorymodule.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "comments")
 public class Comment {
@@ -17,7 +19,7 @@ public class Comment {
     @Column(name = "id")
     private Long id;
     @Column(name = "date")
-    private Date date;
+    private LocalDateTime date;
     @Column(name = "content")
     private String content;
 

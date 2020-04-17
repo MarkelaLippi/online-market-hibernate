@@ -9,7 +9,7 @@ import java.util.List;
 public interface ArticleService {
     Page<ArticleDTO> getPageOfArticlesSortedByDate(int pageNumber, int pageSize);
 
-    ArticleDTO getArticleById(Long id) throws OnlineMarketSuchArticleNotFoundException;
+    ArticleDTO getArticleByIdWithCommentsSortedByDate(Long id) throws OnlineMarketSuchArticleNotFoundException;
 
     List<ArticleDTO> findAllArticles();
 

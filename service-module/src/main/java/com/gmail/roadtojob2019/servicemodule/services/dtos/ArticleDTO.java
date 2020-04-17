@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -17,7 +18,7 @@ public class ArticleDTO {
     private String title;
     private String content;
     private String description;
-    private Date date;
+    private LocalDateTime date;
     private String userLastName;
     private String userName;
     private Set<CommentDTO> comments=new HashSet<>();

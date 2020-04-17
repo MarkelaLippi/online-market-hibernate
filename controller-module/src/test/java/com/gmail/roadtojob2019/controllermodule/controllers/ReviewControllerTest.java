@@ -37,7 +37,7 @@ class ReviewControllerTest {
     private ReviewRepository reviewRepository;
 
     @Test
-    void testGetPageOfReviews() throws Exception {
+    void testGetPageOfReviewsIsOk() throws Exception {
         //given
         final User user = testService.getUser();
         final Review review = testService.getReview(user);
@@ -52,7 +52,7 @@ class ReviewControllerTest {
     }
 
     @Test
-    void testDeleteCheckedReviews() throws Exception {
+    void testDeleteCheckedReviewsIsOk() throws Exception {
         //given
         final List<Long> reviewsIds = List.of(1L, 2L);
         willDoNothing().given(reviewRepository).deleteReviewsByIdIn(reviewsIds);

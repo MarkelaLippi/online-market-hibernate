@@ -21,7 +21,7 @@ public class RestApiArticleController {
 
     @GetMapping("/{id}")
     ArticleDTO getArticle(@PathVariable Long id) throws OnlineMarketSuchArticleNotFoundException {
-        return articleService.getArticleById(id);
+        return articleService.getArticleByIdWithCommentsSortedByDate(id);
     }
 
     @PostMapping

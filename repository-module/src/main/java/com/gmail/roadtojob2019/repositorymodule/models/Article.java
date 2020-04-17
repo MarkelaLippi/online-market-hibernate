@@ -3,7 +3,7 @@ package com.gmail.roadtojob2019.repositorymodule.models;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +25,7 @@ public class Article {
     @Column(name = "description")
     private String description;
     @Column(name = "date")
-    private Date date;
+    private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
