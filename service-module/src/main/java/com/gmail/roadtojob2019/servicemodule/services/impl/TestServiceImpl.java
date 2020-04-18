@@ -47,7 +47,7 @@ public class TestServiceImpl implements TestService {
                 .title("Title of article")
                 .content("Content of article")
                 .description("Description of article")
-                .date(LocalDateTime.now())
+                .date(LocalDateTime.of(2020, 4, 18, 17, 30, 15))
                 .user(user)
                 .comments(Collections.emptySet())
                 .build();
