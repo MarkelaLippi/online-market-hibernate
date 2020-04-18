@@ -11,7 +11,7 @@ public interface ArticleService {
 
     ArticleDTO getArticleByIdWithCommentsSortedByDate(Long id) throws OnlineMarketSuchArticleNotFoundException;
 
-    List<ArticleDTO> findAllArticles();
+    List<ArticleDTO> getAllArticles();
 
     void addArticle(ArticleDTO articleDTO);
 

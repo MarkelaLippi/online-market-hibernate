@@ -55,18 +55,22 @@ public class ArticleServiceImpl implements ArticleService {
 
     private Set<CommentDTO> sortCommentsByDate(Set<CommentDTO> nonSortedByDateComments) {
         return nonSortedByDateComments
-                    .stream()
-                    .sorted(comparing(CommentDTO::getDate).reversed())
-                    .collect(Collectors.toCollection(LinkedHashSet::new));
+                .stream()
+                .sorted(comparing(CommentDTO::getDate).reversed())
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Override
     @Transactional
-    public List<ArticleDTO> findAllArticles() {
-        return articleRepository
-                .findAll()
+    public List<ArticleDTO> getAllArticles() {
+        final List<Article> articles = articleRepository.findAll();
+        return toArticleDTOs(articles);
+    }
+
+    private List<ArticleDTO> toArticleDTOs(List<Article> articles) {
+        return articles
                 .stream()
-                .map(articleConverter::articleToDTO)
+                .map(articleMapper::articleToArticleDto)
                 .collect(Collectors.toList());
     }
 
