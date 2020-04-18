@@ -2,20 +2,20 @@ package com.gmail.roadtojob2019.controllermodule.controllers.restcontrollers;
 
 import com.gmail.roadtojob2019.servicemodule.services.UserService;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api")
+@RequiredArgsConstructor
 public class RestApiUserController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
 
     @PostMapping("/users")
-    void addUser(@RequestBody UserDTO userDTO) {
-        userService.addUser(userDTO);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Long addUser(@RequestBody UserDTO userDTO) {
+        return userService.addUser(userDTO);
     }
 }

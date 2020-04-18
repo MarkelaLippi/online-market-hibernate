@@ -89,12 +89,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void addUser(UserDTO userDTO) {
+    public Long addUser(UserDTO userDTO) {
         final String userPassword = userDTO.getPassword();
         final String encodedUserPassword = passwordEncoder.encode(userPassword);
         final User user = userMapper.userDtoToUser(userDTO);
         user.setPassword(encodedUserPassword);
-        userRepository.save(user);
+        User createdUser = userRepository.save(user);
+        return createdUser.getId();
     }
 
     @Override

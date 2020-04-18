@@ -17,7 +17,7 @@ public interface UserService {
 
     void changeUserRole(Long id, String role) throws OnlineMarketSuchUserNotFoundException;
 
-    void addUser(UserDTO user);
+    Long addUser(UserDTO user);
 
     UserDTO findUserByEmail(String email);
 }
