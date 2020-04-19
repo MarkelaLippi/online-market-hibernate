@@ -76,8 +76,10 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public void addArticle(ArticleDTO articleDTO) {
-        articleRepository.save(articleConverter.dtoToArticle(articleDTO));
+    public Long addArticle(ArticleDTO articleDTO) {
+        final Article article = articleMapper.articleDtoToArticle(articleDTO);
+        final Article createdArticle = articleRepository.save(article);
+        return createdArticle.getId();
     }
 
     @Override

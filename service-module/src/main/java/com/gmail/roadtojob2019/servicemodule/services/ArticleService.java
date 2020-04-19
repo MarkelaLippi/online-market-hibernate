@@ -13,7 +13,7 @@ public interface ArticleService {
 
     List<ArticleDTO> getAllArticles();
 
-    void addArticle(ArticleDTO articleDTO);
+    Long addArticle(ArticleDTO articleDTO);
 
     void deleteArticle(Long id);
 }

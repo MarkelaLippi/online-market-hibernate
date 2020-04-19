@@ -29,8 +29,9 @@ public class RestApiArticleController {
     }
 
     @PostMapping
-    void addArticle(@RequestBody ArticleDTO articleDTO) {
-        articleService.addArticle(articleDTO);
+    @ResponseStatus(HttpStatus.CREATED)
+    Long addArticle(@RequestBody ArticleDTO articleDTO) {
+        return articleService.addArticle(articleDTO);
     }
 
     @DeleteMapping("{id}")
