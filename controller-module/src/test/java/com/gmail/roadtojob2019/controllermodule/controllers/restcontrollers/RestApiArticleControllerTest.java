@@ -18,11 +18,11 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -103,7 +103,7 @@ class RestApiArticleControllerTest {
     }
 
     @Test
-    void testAddArticle() throws Exception {
+    void testAddArticleIsCreated() throws Exception {
         //given
         final User user = testService.getUser();
         final Article article = testService.getArticle(user);
@@ -125,5 +125,17 @@ class RestApiArticleControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().json(articleId));
         verify(articleRepository, times(1)).save(any(Article.class));
+    }
+
+    @Test
+    void testDeleteArticleByIdIsOk() throws Exception {
+        //given
+        final Long articleId = 1L;
+        willDoNothing().given(articleRepository).deleteById(articleId);
+        //when
+        mockMvc.perform(delete("/api/articles/1"))
+                //then
+                .andExpect(status().isOk());
+        verify(articleRepository, times(1)).deleteById(anyLong());
     }
 }

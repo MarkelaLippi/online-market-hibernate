@@ -84,7 +84,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public void deleteArticle(Long id) {
-        articleRepository.deleteById(id);
+    public void deleteArticleById(Long articleID) {
+        articleRepository.deleteById(articleID);
     }
 }
