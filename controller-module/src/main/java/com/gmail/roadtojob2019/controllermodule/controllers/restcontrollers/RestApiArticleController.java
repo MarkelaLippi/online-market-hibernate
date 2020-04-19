@@ -22,9 +22,10 @@ public class RestApiArticleController {
         return articleService.getAllArticles();
     }
 
-    @GetMapping("/{id}")
-    ArticleDTO getArticle(@PathVariable Long id) throws OnlineMarketSuchArticleNotFoundException {
-        return articleService.getArticleByIdWithCommentsSortedByDate(id);
+    @GetMapping("/{articleID}")
+    @ResponseStatus(HttpStatus.OK)
+    ArticleDTO getArticleById(@PathVariable Long articleID) throws OnlineMarketSuchArticleNotFoundException {
+        return articleService.getArticleByIdWithCommentsSortedByDate(articleID);
     }
 
     @PostMapping

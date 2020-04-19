@@ -13,13 +13,14 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -45,7 +46,8 @@ class RestApiArticleControllerTest {
         mockMvc.perform(get("/api/articles"))
                 //then
                 .andExpect(status().isOk())
-                .andExpect(content().json("[\n" +
+                .andExpect(content().json("" +
+                        "[\n" +
                         "  {\n" +
                         "   \"id\" : 1, \n" +
                         "   \"title\" : \"Title of article\",\n" +
@@ -55,8 +57,45 @@ class RestApiArticleControllerTest {
                         "   \"userLastName\" : \"Rogov\",\n" +
                         "   \"userName\" : \"Petr\",\n" +
                         "   \"comments\" : []\n" +
-                        "   }\n" +
+                        "  }\n" +
                         "]"));
         verify(articleRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testGetArticleByIdIsOk() throws Exception {
+        //given
+        final User user = testService.getUser();
+        final Article article = testService.getArticle(user);
+        final Optional<Article> requiredArticle = Optional.of(article);
+        willReturn(requiredArticle).given(articleRepository).findById(article.getId());
+        //when
+        mockMvc.perform(get("/api/articles/1"))
+                //then
+                .andExpect(status().isOk())
+                .andExpect(content().json("" +
+                        "  {\n" +
+                        "   \"id\" : 1, \n" +
+                        "   \"title\" : \"Title of article\",\n" +
+                        "   \"content\" : \"Content of article\",\n" +
+                        "   \"description\" : \"Description of article\",\n" +
+                        "   \"date\" : \"2020-04-18T17:30:15\",\n" +
+                        "   \"userLastName\" : \"Rogov\",\n" +
+                        "   \"userName\" : \"Petr\",\n" +
+                        "   \"comments\" : []\n" +
+                        "  }\n"));
+        verify(articleRepository, times(1)).findById(anyLong());
+    }
+
+    @Test
+    void testGetArticleByIdThrowsOnlineMarketSuchArticleNotFoundException() throws Exception {
+        //given
+        willReturn(Optional.empty()).given(articleRepository).findById(anyLong());
+        //when
+        mockMvc.perform(get("/api/articles/1"))
+                //then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorMessage").value("Article with id = 1 was not found"));
+        verify(articleRepository, times(1)).findById(anyLong());
     }
 }
