@@ -1,8 +1,8 @@
 package com.gmail.roadtojob2019.servicemodule.services.impl;
 
+import com.gmail.roadtojob2019.repositorymodule.models.Review;
 import com.gmail.roadtojob2019.repositorymodule.repositories.ReviewRepository;
 import com.gmail.roadtojob2019.servicemodule.services.ReviewService;
-import com.gmail.roadtojob2019.servicemodule.services.converters.ReviewConverter;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.ReviewDTO;
 import com.gmail.roadtojob2019.servicemodule.services.mappers.ReviewMapper;
 import lombok.RequiredArgsConstructor;
@@ -22,25 +22,27 @@ import java.util.stream.Collectors;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final ReviewConverter reviewConverter;
     private final ReviewMapper reviewMapper;
 
     @Override
     @Transactional
     public Page<ReviewDTO> getPageOfReviews(int pageNumber, int pageSize) {
-        Pageable pageParameters = PageRequest.of(pageNumber - 1, pageSize);
-        return reviewRepository
-                .findAll(pageParameters)
-                .map(reviewMapper::reviewToReviewDto);
+        final Pageable pageParameters = PageRequest.of(pageNumber, pageSize);
+        final Page<Review> pageOfReviews = reviewRepository.findAll(pageParameters);
+        return pageOfReviews.map(reviewMapper::reviewToReviewDto);
     }
 
     @Override
     @Transactional
     public void deleteCheckedReviews(int[] reviewsIDs) {
-        List<Long> reviewsIDsAsLong = Arrays.stream(reviewsIDs)
-                .asLongStream()
-                .boxed()
-                .collect(Collectors.toList());
+       final List<Long> reviewsIDsAsLong = toLongReviewIDs(reviewsIDs);
         reviewRepository.deleteReviewsByIdIn(reviewsIDsAsLong);
+    }
+
+    private List<Long> toLongReviewIDs(int[] reviewsIDs) {
+        return Arrays.stream(reviewsIDs)
+                    .asLongStream()
+                    .boxed()
+                    .collect(Collectors.toList());
     }
 }

@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -39,20 +38,23 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public Page<UserDTO> getPageOfUsersSortedByEmail(int pageNumber, int pageSize) {
         final String SORTING_PARAMETER = "email";
-        Pageable pageParameters = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.ASC, SORTING_PARAMETER);
-        return userRepository
-                .findAll(pageParameters)
-                .map(userMapper::userToUserDto);
+        final Pageable pageParameters = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, SORTING_PARAMETER);
+        final Page<User> pageOfUsers = userRepository.findAll(pageParameters);
+        return pageOfUsers.map(userMapper::userToUserDto);
     }
 
     @Override
     @Transactional
     public void deleteCheckedUsers(int[] usersIDs) {
-        List<Long> usersIDsAsLong = Arrays.stream(usersIDs)
-                .asLongStream()
-                .boxed()
-                .collect(Collectors.toList());
+        final List<Long> usersIDsAsLong = toLongUsersIDs(usersIDs);
         userRepository.deleteUsersByIdIn(usersIDsAsLong);
+    }
+
+    private List<Long> toLongUsersIDs(int[] usersIDs) {
+        return Arrays.stream(usersIDs)
+                    .asLongStream()
+                    .boxed()
+                    .collect(Collectors.toList());
     }
 
     @Override
@@ -94,19 +96,18 @@ public class UserServiceImpl implements UserService {
         final String encodedUserPassword = passwordEncoder.encode(userPassword);
         final User user = userMapper.userDtoToUser(userDTO);
         user.setPassword(encodedUserPassword);
-        User createdUser = userRepository.save(user);
+        final User createdUser = userRepository.save(user);
         return createdUser.getId();
     }
 
     @Override
     @Transactional
     public List<UserDTO> findAllUsers() {
-        List<UserDTO> userDTOs = userRepository
+        return userRepository
                 .findAll()
                 .stream()
                 .map(userConverter::userToDTO)
                 .collect(Collectors.toList());
-        return userDTOs;
     }
 
     @Override

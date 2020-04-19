@@ -5,10 +5,10 @@ import com.gmail.roadtojob2019.repositorymodule.models.User;
 import com.gmail.roadtojob2019.repositorymodule.repositories.ReviewRepository;
 import com.gmail.roadtojob2019.servicemodule.services.TestService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +19,8 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,7 +35,8 @@ class ReviewControllerTest {
     @Autowired
     private TestService testService;
 
-    @Mock
+    @MockBean
+    @Autowired
     private ReviewRepository reviewRepository;
 
     @Test
@@ -42,13 +45,17 @@ class ReviewControllerTest {
         final User user = testService.getUser();
         final Review review = testService.getReview(user);
         final List<Review> reviews = List.of(review);
-        final PageRequest pageParameters = PageRequest.of(1, 10);
-        final Page<Review> pageOfReviews = new PageImpl<>(reviews, pageParameters, 1L);
+        final int pageNumber = 1;
+        final int pageSize = 10;
+        final PageRequest pageParameters = PageRequest.of(pageNumber, pageSize);
+        final long totalAmountOfReviews = 1L;
+        final Page<Review> pageOfReviews = new PageImpl<>(reviews, pageParameters, totalAmountOfReviews);
         willReturn(pageOfReviews).given(reviewRepository).findAll(pageParameters);
         //when
         mockMvc.perform(get("/reviews"))
                 //then
                 .andExpect(status().isOk());
+        verify(reviewRepository, times(1)).findAll(pageParameters);
     }
 
     @Test
@@ -61,5 +68,6 @@ class ReviewControllerTest {
                 .param("reviewsIDs", "1", "2"))
                 //then
                 .andExpect(status().isOk());
+        verify(reviewRepository, times(1)).deleteReviewsByIdIn(reviewsIds);
     }
 }

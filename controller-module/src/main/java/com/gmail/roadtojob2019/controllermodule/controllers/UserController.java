@@ -29,11 +29,11 @@ public class UserController {
     String getPageOfUsersSortedByEmail(@RequestParam Optional<Integer> pageNumber,
                                        @RequestParam Optional<Integer> pageSize,
                                        Model model) {
-        Integer currentPageNumber = pageNumber.orElse(1);
-        Integer currentPageSize = pageSize.orElse(10);
-        Page<UserDTO> users = userService.getPageOfUsersSortedByEmail(currentPageNumber, currentPageSize);
+        final Integer currentPageNumber = pageNumber.orElse(1);
+        final Integer currentPageSize = pageSize.orElse(10);
+        final Page<UserDTO> users = userService.getPageOfUsersSortedByEmail(currentPageNumber, currentPageSize);
         model.addAttribute("users", users);
-        List<Role> roles = roleService.getRoles();
+        final List<Role> roles = roleService.getRoles();
         model.addAttribute("roles", roles);
         return "users";
     }
@@ -47,14 +47,14 @@ public class UserController {
     }
 
     @PostMapping("/users/change/password")
-    String changeUserPasswordAndSendItByEmail(@RequestParam(name = "id") Long userID) throws OnlineMarketSuchUserNotFoundException {
+    String changeUserPasswordAndSendItByEmail(@RequestParam Long userID) throws OnlineMarketSuchUserNotFoundException {
         userService.changeUserPasswordAndSendItByEmail(userID);
         return "forward:/users";
     }
 
     @PostMapping("/users/change/role")
-    String changeUserRole(@RequestParam(name = "id") Long userId, @RequestParam(name = "role") String userRole) throws OnlineMarketSuchUserNotFoundException {
-        userService.changeUserRole(userId, userRole);
+    String changeUserRole(@RequestParam Long userID, @RequestParam String userRole) throws OnlineMarketSuchUserNotFoundException {
+        userService.changeUserRole(userID, userRole);
         return "forward:/users";
     }
 
@@ -71,7 +71,7 @@ public class UserController {
 
     @GetMapping("/user")
     String getAddUserPage(Model model) {
-        UserDTO user = new UserDTO();
+        final UserDTO user = new UserDTO();
         model.addAttribute("user", user);
         return "addUserPage";
     }

@@ -3,7 +3,6 @@ package com.gmail.roadtojob2019.servicemodule.services.impl;
 import com.gmail.roadtojob2019.repositorymodule.models.Article;
 import com.gmail.roadtojob2019.repositorymodule.repositories.ArticleRepository;
 import com.gmail.roadtojob2019.servicemodule.services.ArticleService;
-import com.gmail.roadtojob2019.servicemodule.services.converters.ArticleConverter;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.ArticleDTO;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.CommentDTO;
 import com.gmail.roadtojob2019.servicemodule.services.exception.OnlineMarketSuchArticleNotFoundException;
@@ -27,7 +26,6 @@ import static java.util.Comparator.comparing;
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
-    private final ArticleConverter articleConverter;
     private final ArticleMapper articleMapper;
 
     @Override
@@ -35,10 +33,9 @@ public class ArticleServiceImpl implements ArticleService {
     public Page<ArticleDTO> getPageOfArticlesSortedByDate(int pageNumber, int pageSize) {
         final Sort.Direction sortDirection = Sort.Direction.DESC;
         final String sortField = "date";
-        final Pageable pageParameters = PageRequest.of(pageNumber - 1, pageSize, sortDirection, sortField);
-        return articleRepository
-                .findAll(pageParameters)
-                .map(articleMapper::articleToArticleDto);
+        final Pageable pageParameters = PageRequest.of(pageNumber, pageSize, sortDirection, sortField);
+        final Page<Article> page = articleRepository.findAll(pageParameters);
+        return page.map(articleMapper::articleToArticleDto);
     }
 
     @Override

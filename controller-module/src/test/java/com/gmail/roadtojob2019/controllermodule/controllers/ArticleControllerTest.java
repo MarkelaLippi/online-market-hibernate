@@ -6,10 +6,10 @@ import com.gmail.roadtojob2019.repositorymodule.models.User;
 import com.gmail.roadtojob2019.repositorymodule.repositories.ArticleRepository;
 import com.gmail.roadtojob2019.servicemodule.services.TestService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.mockito.ArgumentMatchers.floatThat;
 import static org.mockito.BDDMockito.willReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -33,7 +33,8 @@ class ArticleControllerTest {
     @Autowired
     private TestService testService;
 
-    @Mock
+    @MockBean
+    @Autowired
     private ArticleRepository articleRepository;
 
     @Test
@@ -48,12 +49,13 @@ class ArticleControllerTest {
         final Article article = testService.getArticle(user);
         final List<Article> articles = List.of(article);
         final int totalAmountOfArticles = articles.size();
-        Page<Article> page = new PageImpl<>(articles, pageParameters, totalAmountOfArticles);
+        final Page<Article> page = new PageImpl<>(articles, pageParameters, totalAmountOfArticles);
         willReturn(page).given(articleRepository).findAll(pageParameters);
         //when
         mockMvc.perform(get("/articles"))
                 //then
                 .andExpect(status().isOk());
+        verify(articleRepository, times(1)).findAll(pageParameters);
     }
 
     @Test
@@ -71,6 +73,8 @@ class ArticleControllerTest {
                 .param("articleID", articleID.toString()))
                 //then
                 .andExpect(status().isOk());
+        verify(articleRepository, times(1)).findById(articleID);
+
     }
 
     @Test
@@ -84,5 +88,6 @@ class ArticleControllerTest {
                 //then
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorMessage").value("Article with id = " + articleID + " was not found"));
+        verify(articleRepository, times(1)).findById(articleID);
     }
 }
