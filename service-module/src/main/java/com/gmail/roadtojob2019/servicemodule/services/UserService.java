@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface UserService {
-    List<UserDTO> findAllUsers();
 
     Page<UserDTO> getPageOfUsersSortedByEmail(int pageNumber, int pageSize);
 

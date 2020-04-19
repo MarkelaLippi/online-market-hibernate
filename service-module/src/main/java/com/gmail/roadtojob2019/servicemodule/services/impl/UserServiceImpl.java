@@ -6,7 +6,6 @@ import com.gmail.roadtojob2019.repositorymodule.repositories.UserRepository;
 import com.gmail.roadtojob2019.servicemodule.services.EmailService;
 import com.gmail.roadtojob2019.servicemodule.services.UserPasswordGenerator;
 import com.gmail.roadtojob2019.servicemodule.services.UserService;
-import com.gmail.roadtojob2019.servicemodule.services.converters.UserConverter;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.UserDTO;
 import com.gmail.roadtojob2019.servicemodule.services.exception.OnlineMarketSuchUserNotFoundException;
 import com.gmail.roadtojob2019.servicemodule.services.mappers.UserMapper;
@@ -28,7 +27,6 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserConverter userConverter;
     private final UserPasswordGenerator userPasswordGenerator;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
@@ -102,17 +100,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<UserDTO> findAllUsers() {
-        return userRepository
-                .findAll()
-                .stream()
-                .map(userConverter::userToDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional
     public UserDTO findUserByEmail(String email) {
-        return userConverter.userToDTO(userRepository.findUserByEmail(email));
+        final User user = userRepository.findUserByEmail(email);
+        return userMapper.userToUserDto(user);
     }
 }
