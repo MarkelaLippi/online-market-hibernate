@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.floatThat;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.times;
@@ -108,7 +109,7 @@ class UserControllerTest {
         final Optional<User> userBeforeChangingRole = Optional.of(user);
         willReturn(userBeforeChangingRole).given(userRepository).findById(userId);
         final String newUserRole = "SALE_USER";
-        MultiValueMap<String, String> requestParameters = new LinkedMultiValueMap<>();
+        final MultiValueMap<String, String> requestParameters = new LinkedMultiValueMap<>();
         requestParameters.add("userID", userId.toString());
         requestParameters.add("userRole", newUserRole);
         //when
@@ -121,10 +122,10 @@ class UserControllerTest {
     @Test
     void testChangeUserRoleThrowsOnlineMarketSuchUserNotFoundException() throws Exception {
         //given
-        Long userId = 10L;
+        final Long userId = 10L;
         willReturn(Optional.empty()).given(userRepository).findById(userId);
         final String newUserRole = "SALE_USER";
-        MultiValueMap<String, String> requestParameters = new LinkedMultiValueMap<>();
+        final MultiValueMap<String, String> requestParameters = new LinkedMultiValueMap<>();
         requestParameters.add("userID", userId.toString());
         requestParameters.add("userRole", newUserRole);
         //when
@@ -153,5 +154,18 @@ class UserControllerTest {
                         "   }\n"))
                 .andExpect(status().isOk());
         verify(userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    void testGetProfileIsOk() throws Exception {
+        //given
+        final User user = testService.getUser();
+        final Optional<User> requiredUser = Optional.of(user);
+        final Long userID=user.getId();
+        willReturn(requiredUser).given(userRepository).findById(userID);
+        //when
+        mockMvc.perform(get("/users/profile/1"))
+                //then
+                .andExpect(status().isOk());
     }
 }
