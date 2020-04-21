@@ -183,7 +183,7 @@ class UserControllerTest {
     }
 
     @Test
-    void testChangeProfileIsOk() throws Exception {
+    void testChangeUserProfileWithValidFieldsIsOk() throws Exception {
         //given
         final User user = testService.getUser();
         final Long userID = user.getId();
@@ -196,13 +196,13 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("  {\n" +
                         "      \"id\" : 1, \n" +
-                        "      \"lastName\" : \"New last name\", \n" +
-                        "      \"name\" : \"New name\", \n" +
+                        "      \"lastName\" : \"NewLastName\", \n" +
+                        "      \"name\" : \"NewName\", \n" +
                         "      \"middleName\" : \"Petrovich\", \n" +
                         "      \"email\" : \"Rogov@gmail.com\", \n" +
-                        "      \"address\" : \"New address\", \n" +
-                        "      \"phone\" : \"New phone\", \n" +
-                        "      \"password\" : \"New password\", \n" +
+                        "      \"address\" : \"NewAddress\", \n" +
+                        "      \"phone\" : \"NewPhone\", \n" +
+                        "      \"password\" : \"NewPassword\", \n" +
                         "      \"role\" : \"CUSTOMER_USER\" \n" +
                         "   }\n"))
                 //then

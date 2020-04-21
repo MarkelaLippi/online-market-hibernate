@@ -93,15 +93,11 @@ public class UserController {
 
     @PostMapping("/users/profile/change")
     @ResponseStatus(HttpStatus.OK)
-    String changeProfile(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult, Model model) throws OnlineMarketSuchUserNotFoundException {
-/*
+    String changeUserProfile(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) throws OnlineMarketSuchUserNotFoundException {
         userValidator.validate(userDTO, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "forward:/users/profile/" + userDTO.getId() + "";
-        } else {
-*/
+        if (!bindingResult.hasErrors()) {
             userService.changeProfile(userDTO);
-            return "forward:/users";
-//        }
+        }
+        return "forward:/users/profile/" + userDTO.getId() + "";
     }
 }

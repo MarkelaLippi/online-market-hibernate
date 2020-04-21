@@ -67,11 +67,11 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public User getChangedUser(User user) {
-        user.setName("New name");
-        user.setLastName("New last name");
-        user.setAddress("New address");
-        user.setPhone("New phone");
-        user.setPassword("New password");
+        user.setName("NewName");
+        user.setLastName("NewLastName");
+        user.setAddress("NewAddress");
+        user.setPhone("NewPhone");
+        user.setPassword("NewPassword");
         return user;
     }
 }
