@@ -8,6 +8,7 @@ import com.gmail.roadtojob2019.servicemodule.services.exception.OnlineMarketSuch
 import com.gmail.roadtojob2019.servicemodule.services.validators.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +27,7 @@ public class UserController {
     private final UserValidator userValidator;
 
     @GetMapping("/users")
+    @ResponseStatus(HttpStatus.OK)
     String getPageOfUsersSortedByEmail(@RequestParam Optional<Integer> pageNumber,
                                        @RequestParam Optional<Integer> pageSize,
                                        Model model) {
@@ -39,6 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/users/delete")
+    @ResponseStatus(HttpStatus.OK)
     String deleteCheckedUsers(@RequestParam final int[] usersIDs) {
         if (usersIDs != null) {
             userService.deleteCheckedUsers(usersIDs);
@@ -47,18 +50,21 @@ public class UserController {
     }
 
     @PostMapping("/users/change/password")
+    @ResponseStatus(HttpStatus.OK)
     String changeUserPasswordAndSendItByEmail(@RequestParam Long userID) throws OnlineMarketSuchUserNotFoundException {
         userService.changeUserPasswordAndSendItByEmail(userID);
         return "forward:/users";
     }
 
     @PostMapping("/users/change/role")
+    @ResponseStatus(HttpStatus.OK)
     String changeUserRole(@RequestParam Long userID, @RequestParam String userRole) throws OnlineMarketSuchUserNotFoundException {
         userService.changeUserRole(userID, userRole);
         return "forward:/users";
     }
 
     @PostMapping("/users/add")
+    @ResponseStatus(HttpStatus.CREATED)
     String addUser(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
         userValidator.validate(userDTO, bindingResult);
         if (bindingResult.hasErrors()) {
@@ -70,9 +76,18 @@ public class UserController {
     }
 
     @GetMapping("/user")
+    @ResponseStatus(HttpStatus.OK)
     String getAddUserPage(Model model) {
         final UserDTO user = new UserDTO();
         model.addAttribute("user", user);
-        return "addUserPage";
+        return "user";
+    }
+
+    @GetMapping("/users/profile/{userID}")
+    @ResponseStatus(HttpStatus.OK)
+    String getProfile(@PathVariable Long userID, Model model) throws OnlineMarketSuchUserNotFoundException {
+        final UserDTO user = userService.getUserById(userID);
+        model.addAttribute("user", user);
+        return "profile";
     }
 }

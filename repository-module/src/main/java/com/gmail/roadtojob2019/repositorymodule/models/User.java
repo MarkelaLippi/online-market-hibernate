@@ -24,6 +24,10 @@ public class User {
     private String name;
     @Column(name = "middle_name")
     private String middleName;
+    @Column(name = "address")
+    private String address;
+    @Column(name = "phone")
+    private String phone;
     @Column(name = "email")
     private String email;
     @Column(name = "password")

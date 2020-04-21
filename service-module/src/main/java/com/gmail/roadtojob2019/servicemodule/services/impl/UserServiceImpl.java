@@ -50,16 +50,16 @@ public class UserServiceImpl implements UserService {
 
     private List<Long> toLongUsersIDs(int[] usersIDs) {
         return Arrays.stream(usersIDs)
-                    .asLongStream()
-                    .boxed()
-                    .collect(Collectors.toList());
+                .asLongStream()
+                .boxed()
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public void changeUserPasswordAndSendItByEmail(Long userId) throws OnlineMarketSuchUserNotFoundException {
-        final User user = userRepository.findById(userId)
-                .orElseThrow(() -> new OnlineMarketSuchUserNotFoundException("User with id = " + userId + " was not found"));
+    public void changeUserPasswordAndSendItByEmail(Long userID) throws OnlineMarketSuchUserNotFoundException {
+        final User user = userRepository.findById(userID)
+                .orElseThrow(() -> new OnlineMarketSuchUserNotFoundException("User with id = " + userID + " was not found"));
         final String newUserPassword = changeUserPassword(user);
         SendNewPasswordToUserByEmail(user, newUserPassword);
     }
@@ -79,9 +79,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void changeUserRole(Long userId, String userRole) throws OnlineMarketSuchUserNotFoundException {
-        final User user = userRepository.findById(userId)
-                .orElseThrow(() -> new OnlineMarketSuchUserNotFoundException("User with id = " + userId + " was not found"));
+    public void changeUserRole(Long userID, String userRole) throws OnlineMarketSuchUserNotFoundException {
+        final User user = userRepository.findById(userID)
+                .orElseThrow(() -> new OnlineMarketSuchUserNotFoundException("User with id = " + userID + " was not found"));
         final Role newUserRole = Role.valueOf(userRole);
         user.setRole(newUserRole);
         userRepository.save(user);
@@ -102,6 +102,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDTO findUserByEmail(String email) {
         final User user = userRepository.findUserByEmail(email);
+        return userMapper.userToUserDto(user);
+    }
+
+    @Override
+    public UserDTO getUserById(Long userID) throws OnlineMarketSuchUserNotFoundException {
+        final User user = userRepository.findById(userID)
+                .orElseThrow(() -> new OnlineMarketSuchUserNotFoundException("User with id = " + userID + " was not found"));
         return userMapper.userToUserDto(user);
     }
 }

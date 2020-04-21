@@ -19,4 +19,6 @@ public interface UserService {
     Long addUser(UserDTO user);
 
     UserDTO findUserByEmail(String email);
+
+    UserDTO getUserById(Long userID) throws OnlineMarketSuchUserNotFoundException;
 }

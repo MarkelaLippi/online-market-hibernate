@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.floatThat;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.times;
@@ -152,7 +151,7 @@ class UserControllerTest {
                         "      \"password\" : \"1234\", \n" +
                         "      \"role\" : \"CUSTOMER_USER\" \n" +
                         "   }\n"))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
         verify(userRepository, times(1)).save(any(User.class));
     }
 

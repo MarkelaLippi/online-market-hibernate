@@ -1,10 +1,7 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
-   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
-   http://www.liquibase.org/xml/ns/dbchangelog
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <changeSet author="RoadToJob2019@gmail.com" id="CREATE_USERS_TABLE">
@@ -15,6 +12,8 @@
             <column name="last_name" type="VARCHAR(255)"/>
             <column name="name" type="VARCHAR(255)"/>
             <column name="middle_name" type="VARCHAR(255)"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
             <column name="email" type="VARCHAR(255)"/>
             <column name="password" type="VARCHAR(255)"/>
             <column name="role" type="VARCHAR(255)"/>
@@ -27,6 +26,8 @@
             <column name="last_name" value="Markelov"/>
             <column name="name" value="Sergey"/>
             <column name="middle_name" value="Aleksandrovich"/>
+            <column name="address" value="Minsk"/>
+            <column name="phone" value="+375291111111"/>
             <column name="email" value="S_markelov@tut.by"/>
             <column name="password" value="$2a$10$O7gsl4w/VN3fXM6r313dQuvMF1R/DRNi.d84lajm6ZKxftP0660pS"/>
             <column name="role" value="ADMINISTRATOR"/>
@@ -38,6 +39,8 @@
             <column name="last_name" value="Ivanov"/>
             <column name="name" value="Ivan"/>
             <column name="middle_name" value="Ivanovich"/>
+            <column name="address" value="Gomel"/>
+            <column name="phone" value="+375292222222"/>
             <column name="email" value="Ivanov@tut.by"/>
             <column name="password" value="$2a$10$O7gsl4w/VN3fXM6r313dQuvMF1R/DRNi.d84lajm6ZKxftP0660pS"/>
             <column name="role" value="SALE_USER"/>
@@ -49,6 +52,8 @@
             <column name="last_name" value="Petrov"/>
             <column name="name" value="Petr"/>
             <column name="middle_name" value="Petrovich"/>
+            <column name="address" value="Brest"/>
+            <column name="phone" value="+375293333333"/>
             <column name="email" value="Petrov@tut.by"/>
             <column name="password" value="$2a$10$O7gsl4w/VN3fXM6r313dQuvMF1R/DRNi.d84lajm6ZKxftP0660pS"/>
             <column name="role" value="CUSTOMER_USER"/>
@@ -60,6 +65,8 @@
             <column name="last_name" value="Sidorov"/>
             <column name="name" value="Sidor"/>
             <column name="middle_name" value="Sidorovich"/>
+            <column name="address" value="Grodno"/>
+            <column name="phone" value="+375294444444"/>
             <column name="email" value="Sidorov@tut.by"/>
             <column name="password" value="$2a$10$O7gsl4w/VN3fXM6r313dQuvMF1R/DRNi.d84lajm6ZKxftP0660pS"/>
             <column name="role" value="SECURE_API_USER"/>

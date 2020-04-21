@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+<table>
+    <caption>Profile</caption>
+    <tr>
+        <th>User name</th>
+        <th>User last name</th>
+        <th>Address</th>
+        <th>Phone number</th>
+    </tr>
+    <tr th:object="${user}">
+        <td><span th:text="*{name}"></span></td>
+        <td><span th:text="*{lastName}"></span></td>
+        <td><span th:text="*{address}"></span></td>
+        <td><span th:text="*{phone}"></span></td>
+    </tr>
+</table>
+</body>
+</html>
