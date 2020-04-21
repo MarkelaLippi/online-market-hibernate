@@ -13,4 +13,6 @@ public interface TestService {
     Article getArticle(User user);
 
     Comment getComment(User user);
+
+    User getChangedUser(User user);
 }

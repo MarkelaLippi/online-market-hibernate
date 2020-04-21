@@ -111,4 +111,23 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new OnlineMarketSuchUserNotFoundException("User with id = " + userID + " was not found"));
         return userMapper.userToUserDto(user);
     }
+
+    @Override
+    public UserDTO changeProfile(UserDTO userDTO) throws OnlineMarketSuchUserNotFoundException {
+        final Long userID = userDTO.getId();
+        final User user = userRepository.findById(userID)
+                .orElseThrow(() -> new OnlineMarketSuchUserNotFoundException("User with id = " + userID + " was not found"));
+        changeUserFields(userDTO, user);
+        final User changedUser = userRepository.save(user);
+        return userMapper.userToUserDto(changedUser);
+    }
+
+    private void changeUserFields(UserDTO userDTO, User user) {
+        user.setLastName(userDTO.getLastName());
+        user.setName(userDTO.getName());
+        user.setAddress(userDTO.getAddress());
+        user.setPhone(userDTO.getPhone());
+        final String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
+        user.setPassword(encodedPassword);
+    }
 }

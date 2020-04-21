@@ -90,4 +90,18 @@ public class UserController {
         model.addAttribute("user", user);
         return "profile";
     }
+
+    @PostMapping("/users/profile/change")
+    @ResponseStatus(HttpStatus.OK)
+    String changeProfile(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult, Model model) throws OnlineMarketSuchUserNotFoundException {
+/*
+        userValidator.validate(userDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "forward:/users/profile/" + userDTO.getId() + "";
+        } else {
+*/
+            userService.changeProfile(userDTO);
+            return "forward:/users";
+//        }
+    }
 }

@@ -121,18 +121,18 @@ class UserControllerTest {
     @Test
     void testChangeUserRoleThrowsOnlineMarketSuchUserNotFoundException() throws Exception {
         //given
-        final Long userId = 10L;
-        willReturn(Optional.empty()).given(userRepository).findById(userId);
+        final Long userID = 10L;
+        willReturn(Optional.empty()).given(userRepository).findById(userID);
         final String newUserRole = "SALE_USER";
         final MultiValueMap<String, String> requestParameters = new LinkedMultiValueMap<>();
-        requestParameters.add("userID", userId.toString());
+        requestParameters.add("userID", userID.toString());
         requestParameters.add("userRole", newUserRole);
         //when
         mockMvc.perform(post("/users/change/role").params(requestParameters))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorMessage").value("User with id = " + userId + " was not found"));
-        verify(userRepository, times(1)).findById(userId);
+                .andExpect(jsonPath("errorMessage").value("User with id = " + userID + " was not found"));
+        verify(userRepository, times(1)).findById(userID);
     }
 
     @Test
@@ -160,11 +160,54 @@ class UserControllerTest {
         //given
         final User user = testService.getUser();
         final Optional<User> requiredUser = Optional.of(user);
-        final Long userID=user.getId();
+        final Long userID = user.getId();
         willReturn(requiredUser).given(userRepository).findById(userID);
         //when
         mockMvc.perform(get("/users/profile/1"))
                 //then
                 .andExpect(status().isOk());
+        verify(userRepository, times(1)).findById(userID);
+    }
+
+    @Test
+    void testGetProfileThrowsOnlineMarketSuchUserNotFoundException() throws Exception {
+        //given
+        final Long userID = 100L;
+        willReturn(Optional.empty()).given(userRepository).findById(userID);
+        //when
+        mockMvc.perform(get("/users/profile/100"))
+                //then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorMessage").value("User with id = " + userID + " was not found"));
+        verify(userRepository, times(1)).findById(userID);
+    }
+
+    @Test
+    void testChangeProfileIsOk() throws Exception {
+        //given
+        final User user = testService.getUser();
+        final Long userID = user.getId();
+        final Optional<User> requiredUser = Optional.of(user);
+        willReturn(requiredUser).given(userRepository).findById(userID);
+        final User changedUser = testService.getChangedUser(user);
+        willReturn(changedUser).given(userRepository).save(changedUser);
+        //when
+        mockMvc.perform(post("/users/profile/change")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("  {\n" +
+                        "      \"id\" : 1, \n" +
+                        "      \"lastName\" : \"New last name\", \n" +
+                        "      \"name\" : \"New name\", \n" +
+                        "      \"middleName\" : \"Petrovich\", \n" +
+                        "      \"email\" : \"Rogov@gmail.com\", \n" +
+                        "      \"address\" : \"New address\", \n" +
+                        "      \"phone\" : \"New phone\", \n" +
+                        "      \"password\" : \"New password\", \n" +
+                        "      \"role\" : \"CUSTOMER_USER\" \n" +
+                        "   }\n"))
+                //then
+                .andExpect(status().isOk());
+        verify(userRepository, times(1)).findById(userID);
+        verify(userRepository, times(1)).save(changedUser);
     }
 }

@@ -21,4 +21,6 @@ public interface UserService {
     UserDTO findUserByEmail(String email);
 
     UserDTO getUserById(Long userID) throws OnlineMarketSuchUserNotFoundException;
+
+    UserDTO changeProfile(UserDTO userDTO) throws OnlineMarketSuchUserNotFoundException;
 }

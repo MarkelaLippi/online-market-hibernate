@@ -19,6 +19,8 @@ public class TestServiceImpl implements TestService {
                 .lastName("Rogov")
                 .name("Petr")
                 .middleName("Petrovich")
+                .address("Orsha")
+                .phone("+375296666666")
                 .email("Rogov@gmail.com")
                 .password("1234")
                 .role(Role.ADMINISTRATOR)
@@ -61,5 +63,15 @@ public class TestServiceImpl implements TestService {
                 .content("Content of comment")
                 .user(user)
                 .build();
+    }
+
+    @Override
+    public User getChangedUser(User user) {
+        user.setName("New name");
+        user.setLastName("New last name");
+        user.setAddress("New address");
+        user.setPhone("New phone");
+        user.setPassword("New password");
+        return user;
     }
 }
