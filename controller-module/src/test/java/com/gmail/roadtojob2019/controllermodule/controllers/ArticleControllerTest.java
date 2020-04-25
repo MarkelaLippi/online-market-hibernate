@@ -129,7 +129,7 @@ class ArticleControllerTest {
     }
 
     @Test
-    void changeArticleIsOk() throws Exception {
+    void testChangeArticleIsOk() throws Exception {
         //given
         final User user = testService.getUser();
         final Article article = testService.getArticle(user);
@@ -157,7 +157,7 @@ class ArticleControllerTest {
     }
 
     @Test
-    void changeArticleThrowsOnlineMarketSuchArticleNotFoundException() throws Exception {
+    void testChangeArticleThrowsOnlineMarketSuchArticleNotFoundException() throws Exception {
         //given
         final Long articleID = 100L;
         willReturn(Optional.empty()).given(articleRepository).findById(articleID);
