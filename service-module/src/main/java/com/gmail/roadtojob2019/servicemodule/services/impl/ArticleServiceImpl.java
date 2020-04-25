@@ -30,7 +30,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public Page<ArticleDTO> getPageOfArticlesSortedByDate(int pageNumber, int pageSize) {
+    public Page<ArticleDTO> getPageOfArticlesSortedByDate(final int pageNumber, final int pageSize) {
         final Sort.Direction sortDirection = Sort.Direction.DESC;
         final String sortField = "date";
         final Pageable pageParameters = PageRequest.of(pageNumber, pageSize, sortDirection, sortField);
@@ -40,7 +40,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public ArticleDTO getArticleByIdWithCommentsSortedByDate(Long articleID) throws OnlineMarketSuchArticleNotFoundException {
+    public ArticleDTO getArticleByIdWithCommentsSortedByDate(final Long articleID) throws OnlineMarketSuchArticleNotFoundException {
         final Article article = articleRepository.findById(articleID)
                 .orElseThrow(() -> new OnlineMarketSuchArticleNotFoundException("Article with id = " + articleID + " was not found"));
         final ArticleDTO articleDTO = articleMapper.articleToArticleDto(article);
@@ -50,7 +50,7 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDTO;
     }
 
-    private Set<CommentDTO> sortCommentsByDate(Set<CommentDTO> nonSortedByDateComments) {
+    private Set<CommentDTO> sortCommentsByDate(final Set<CommentDTO> nonSortedByDateComments) {
         return nonSortedByDateComments
                 .stream()
                 .sorted(comparing(CommentDTO::getDate).reversed())
@@ -64,7 +64,7 @@ public class ArticleServiceImpl implements ArticleService {
         return toArticleDTOs(articles);
     }
 
-    private List<ArticleDTO> toArticleDTOs(List<Article> articles) {
+    private List<ArticleDTO> toArticleDTOs(final List<Article> articles) {
         return articles
                 .stream()
                 .map(articleMapper::articleToArticleDto)
@@ -73,7 +73,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public Long addArticle(ArticleDTO articleDTO) {
+    public Long addArticle(final ArticleDTO articleDTO) {
         final Article article = articleMapper.articleDtoToArticle(articleDTO);
         final Article createdArticle = articleRepository.save(article);
         return createdArticle.getId();

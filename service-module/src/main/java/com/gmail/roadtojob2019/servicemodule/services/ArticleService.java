@@ -9,11 +9,11 @@ import java.util.List;
 public interface ArticleService {
     Page<ArticleDTO> getPageOfArticlesSortedByDate(int pageNumber, int pageSize);
 
-    ArticleDTO getArticleByIdWithCommentsSortedByDate(Long id) throws OnlineMarketSuchArticleNotFoundException;
+    ArticleDTO getArticleByIdWithCommentsSortedByDate(Long articleID) throws OnlineMarketSuchArticleNotFoundException;
 
     List<ArticleDTO> getAllArticles();
 
     Long addArticle(ArticleDTO articleDTO);
 
-    void deleteArticleById(Long id);
+    void deleteArticleById(Long articleID);
 }

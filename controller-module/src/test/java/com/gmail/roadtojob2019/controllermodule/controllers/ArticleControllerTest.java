@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -18,10 +19,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -89,5 +91,41 @@ class ArticleControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorMessage").value("Article with id = " + articleID + " was not found"));
         verify(articleRepository, times(1)).findById(articleID);
+    }
+
+    @Test
+    void testDeleteArticleIsOk() throws Exception {
+        //given
+        Long userID = 1L;
+        willDoNothing().given(articleRepository).deleteById(userID);
+        //when
+        mockMvc.perform(get("/articles/delete/" + userID + ""))
+                //then
+                .andExpect(status().isOk());
+        verify(articleRepository, only()).deleteById(userID);
+    }
+
+    @Test
+    void testAddArticleIsCreated() throws Exception {
+        //given
+        final User user = testService.getUser();
+        final Article article = testService.getArticle(user);
+        final String articleID = article.getId().toString();
+        willReturn(article).given(articleRepository).save(any(Article.class));
+        //when
+        mockMvc.perform(post("/articles/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("" +
+                "  {\n" +
+                "   \"title\" : \"Title of article\",\n" +
+                "   \"content\" : \"Content of article\",\n" +
+                "   \"description\" : \"Description of article\",\n" +
+                "   \"date\" : \"2020-04-18T17:30:15\",\n" +
+                "   \"userLastName\" : \"Rogov\",\n" +
+                "   \"userName\" : \"Petr\"\n" +
+                "  }\n"))
+                //then
+                .andExpect(status().isCreated());
+        verify(articleRepository, only()).save(any(Article.class));
     }
 }
