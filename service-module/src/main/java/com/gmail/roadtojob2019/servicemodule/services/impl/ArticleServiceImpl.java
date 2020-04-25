@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -81,7 +82,23 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public void deleteArticleById(Long articleID) {
+    public void deleteArticleById(final Long articleID) {
         articleRepository.deleteById(articleID);
+    }
+
+    @Override
+    @Transactional
+    public Long changeArticle(final ArticleDTO articleDTO) throws OnlineMarketSuchArticleNotFoundException {
+        final Long articleID = articleDTO.getId();
+        final Article article = articleRepository.findById(articleID)
+                .orElseThrow(() -> new OnlineMarketSuchArticleNotFoundException("Article with id = " + articleID + " was not found"));
+        final String newArticleTitle = articleDTO.getTitle();
+        article.setTitle(newArticleTitle);
+        final String newArticleContent = articleDTO.getContent();
+        article.setContent(newArticleContent);
+        final LocalDateTime newArticleDate = articleDTO.getDate();
+        article.setDate(newArticleDate);
+        final Article changedArticle = articleRepository.save(article);
+        return changedArticle.getId();
     }
 }

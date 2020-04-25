@@ -53,4 +53,11 @@ public class ArticleController {
         articleService.addArticle(articleDTO);
         return "forward: /articles";
     }
+
+    @PostMapping("/articles/change")
+    @ResponseStatus(HttpStatus.OK)
+    String changeArticle(@RequestBody final ArticleDTO articleDTO) throws OnlineMarketSuchArticleNotFoundException {
+        articleService.changeArticle(articleDTO);
+        return "forward: /articles";
+    }
 }

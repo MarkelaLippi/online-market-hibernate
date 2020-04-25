@@ -74,4 +74,12 @@ public class TestServiceImpl implements TestService {
         user.setPassword("NewPassword");
         return user;
     }
+
+    @Override
+    public Article getChangedArticle(Article article) {
+        article.setTitle("NewTitle");
+        article.setContent("NewContent");
+        article.setDate(LocalDateTime.now());
+        return article;
+    }
 }

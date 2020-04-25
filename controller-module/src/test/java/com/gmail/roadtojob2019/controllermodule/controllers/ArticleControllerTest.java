@@ -94,7 +94,7 @@ class ArticleControllerTest {
     }
 
     @Test
-    void testDeleteArticleIsOk() throws Exception {
+    void testDeleteArticleByIdIsOk() throws Exception {
         //given
         Long userID = 1L;
         willDoNothing().given(articleRepository).deleteById(userID);
@@ -102,7 +102,7 @@ class ArticleControllerTest {
         mockMvc.perform(get("/articles/delete/" + userID + ""))
                 //then
                 .andExpect(status().isOk());
-        verify(articleRepository, only()).deleteById(userID);
+        verify(articleRepository, times(1)).deleteById(userID);
     }
 
     @Test
@@ -110,22 +110,73 @@ class ArticleControllerTest {
         //given
         final User user = testService.getUser();
         final Article article = testService.getArticle(user);
-        final String articleID = article.getId().toString();
         willReturn(article).given(articleRepository).save(any(Article.class));
         //when
         mockMvc.perform(post("/articles/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("" +
-                "  {\n" +
-                "   \"title\" : \"Title of article\",\n" +
-                "   \"content\" : \"Content of article\",\n" +
-                "   \"description\" : \"Description of article\",\n" +
-                "   \"date\" : \"2020-04-18T17:30:15\",\n" +
-                "   \"userLastName\" : \"Rogov\",\n" +
-                "   \"userName\" : \"Petr\"\n" +
-                "  }\n"))
+                        "  {\n" +
+                        "   \"title\" : \"Title of article\",\n" +
+                        "   \"content\" : \"Content of article\",\n" +
+                        "   \"description\" : \"Description of article\",\n" +
+                        "   \"date\" : \"2020-04-18T17:30:15\",\n" +
+                        "   \"userLastName\" : \"Rogov\",\n" +
+                        "   \"userName\" : \"Petr\"\n" +
+                        "  }\n"))
                 //then
                 .andExpect(status().isCreated());
-        verify(articleRepository, only()).save(any(Article.class));
+        verify(articleRepository, times(1)).save(any(Article.class));
+    }
+
+    @Test
+    void changeArticleIsOk() throws Exception {
+        //given
+        final User user = testService.getUser();
+        final Article article = testService.getArticle(user);
+        final Long articleID = article.getId();
+        final Optional<Article> articleBeforeChanging = Optional.of(article);
+        willReturn(articleBeforeChanging).given(articleRepository).findById(articleID);
+        final Article changedArticle = testService.getChangedArticle(article);
+        willReturn(changedArticle).given(articleRepository).save(any(Article.class));
+        //when
+        mockMvc.perform(post("/articles/change")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("" +
+                        "  {\n" +
+                        "   \"id\" : 1,\n" +
+                        "   \"title\" : \"newTitle\",\n" +
+                        "   \"content\" : \"newContent\",\n" +
+                        "   \"description\" : \"Description of article\",\n" +
+                        "   \"date\" : \"2020-04-25T14:21:00\",\n" +
+                        "   \"userLastName\" : \"Rogov\",\n" +
+                        "   \"userName\" : \"Petr\"\n" +
+                        "  }\n"))
+                .andExpect(status().isOk());
+        verify(articleRepository, times(1)).findById(articleID);
+        verify(articleRepository, times(1)).save(any(Article.class));
+    }
+
+    @Test
+    void changeArticleThrowsOnlineMarketSuchArticleNotFoundException() throws Exception {
+        //given
+        final Long articleID = 100L;
+        willReturn(Optional.empty()).given(articleRepository).findById(articleID);
+        //when
+        mockMvc.perform(post("/articles/change")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("" +
+                        "  {\n" +
+                        "   \"id\" : 100,\n" +
+                        "   \"title\" : \"newTitle\",\n" +
+                        "   \"content\" : \"newContent\",\n" +
+                        "   \"description\" : \"Description of article\",\n" +
+                        "   \"date\" : \"2020-04-25T14:21:00\",\n" +
+                        "   \"userLastName\" : \"Rogov\",\n" +
+                        "   \"userName\" : \"Petr\"\n" +
+                        "  }\n"))
+                //then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorMessage").value("Article with id = " + articleID + " was not found"));
+        verify(articleRepository, times(1)).findById(articleID);
     }
 }

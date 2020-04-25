@@ -16,4 +16,6 @@ public interface ArticleService {
     Long addArticle(ArticleDTO articleDTO);
 
     void deleteArticleById(Long articleID);
+
+    Long changeArticle(ArticleDTO articleDTO) throws OnlineMarketSuchArticleNotFoundException;
 }

@@ -15,4 +15,6 @@ public interface TestService {
     Comment getComment(User user);
 
     User getChangedUser(User user);
+
+    Article getChangedArticle (Article article);
 }
