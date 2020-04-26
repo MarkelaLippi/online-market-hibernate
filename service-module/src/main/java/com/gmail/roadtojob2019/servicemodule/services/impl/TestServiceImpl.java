@@ -4,10 +4,12 @@ import com.gmail.roadtojob2019.repositorymodule.models.*;
 import com.gmail.roadtojob2019.servicemodule.services.TestService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class TestServiceImpl implements TestService {
@@ -81,5 +83,16 @@ public class TestServiceImpl implements TestService {
         article.setContent("NewContent");
         article.setDate(LocalDateTime.now());
         return article;
+    }
+
+    @Override
+    public Item getItem(User user) {
+        return Item.builder()
+                .id(1L)
+                .name("newItem")
+                .identifier(UUID.randomUUID())
+                .price(BigDecimal.valueOf(12.50))
+                .user(user)
+                .build();
     }
 }

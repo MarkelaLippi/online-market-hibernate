@@ -1,9 +1,6 @@
 package com.gmail.roadtojob2019.servicemodule.services;
 
-import com.gmail.roadtojob2019.repositorymodule.models.Article;
-import com.gmail.roadtojob2019.repositorymodule.models.Comment;
-import com.gmail.roadtojob2019.repositorymodule.models.Review;
-import com.gmail.roadtojob2019.repositorymodule.models.User;
+import com.gmail.roadtojob2019.repositorymodule.models.*;
 
 public interface TestService {
     User getUser();
@@ -17,4 +14,6 @@ public interface TestService {
     User getChangedUser(User user);
 
     Article getChangedArticle (Article article);
+
+    Item getItem(User user);
 }

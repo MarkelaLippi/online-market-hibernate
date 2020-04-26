@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>Items</title>
+</head>
+<body>
+<table>
+    <caption>Items</caption>
+    <tr>
+        <th>Name</th>
+        <th>Identifier</th>
+        <th>Price</th>
+    </tr>
+    <tr th:each="item : ${items.content}">
+        <td><span th:text="${item.name}"></span></td>
+        <td><span th:text="${item.identifier}"></span></td>
+        <td><span th:text="${item.price}"></span></td>
+        <td>
+            <a th:href="@{/item?id={id}(id=${item.id})}">More...</a>
+        </td>
+    </tr>
+</table>
+<div>
+    <th:block th:if="${items.getTotalPages()}>0"
+              th:each="pageNumber:${#numbers.sequence(1,items.getTotalPages())}">
+        <a th:href="@{/items?page={page}(page=${pageNumber})}">
+            <span th:text="${pageNumber}">...</span></a>
+    </th:block>
+</div>
+</body>
+</html>
