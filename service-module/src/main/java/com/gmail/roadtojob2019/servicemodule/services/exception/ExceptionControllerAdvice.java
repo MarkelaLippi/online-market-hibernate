@@ -15,7 +15,8 @@ public class ExceptionControllerAdvice {
 
     @ExceptionHandler({
             OnlineMarketSuchUserNotFoundException.class,
-            OnlineMarketSuchArticleNotFoundException.class
+            OnlineMarketSuchArticleNotFoundException.class,
+            OnlineMarketSuchItemNotFoundException.class
     })
     private ResponseEntity<ErrorMessage> handleBadRequest(final Exception e) {
         log.log(Level.SEVERE, e.getMessage(), e);

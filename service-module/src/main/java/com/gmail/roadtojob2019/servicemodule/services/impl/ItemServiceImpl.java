@@ -4,6 +4,8 @@ import com.gmail.roadtojob2019.repositorymodule.models.Item;
 import com.gmail.roadtojob2019.repositorymodule.repositories.ItemRepository;
 import com.gmail.roadtojob2019.servicemodule.services.ItemService;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.ItemDto;
+import com.gmail.roadtojob2019.servicemodule.services.exception.OnlineMarketSuchArticleNotFoundException;
+import com.gmail.roadtojob2019.servicemodule.services.exception.OnlineMarketSuchItemNotFoundException;
 import com.gmail.roadtojob2019.servicemodule.services.mappers.ItemMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,5 +28,17 @@ public class ItemServiceImpl implements ItemService {
         final Pageable pageParameters = PageRequest.of(pageNumber, pageSize, sortDirection, sortField);
         final Page<Item> page = itemRepository.findAll(pageParameters);
         return page.map(itemMapper::itemToItemDto);
+    }
+
+    @Override
+    public void deleteItemById(final Long itemID) {
+        itemRepository.deleteById(itemID);
+    }
+
+    @Override
+    public ItemDto getItemById(final Long itemID) throws OnlineMarketSuchItemNotFoundException {
+        final Item item = itemRepository.findById(itemID)
+                .orElseThrow(() -> new OnlineMarketSuchItemNotFoundException("Item with id = " + itemID + " was not found"));
+        return itemMapper.itemToItemDto(item);
     }
 }

@@ -266,4 +266,37 @@
             <column name="article_id" value="1"/>
         </insert>
     </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="CREATE_ITEMS_TABLE">
+        <createTable tableName="items">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="identifier" type="VARCHAR(255)"/>
+            <column name="price" type="DECIMAL"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="FK_ITEMS_TABLE">
+        <addForeignKeyConstraint baseTableName="items"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 constraintName="FK_items_users"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"/>
+    </changeSet>
+
+    <changeSet author="RoadToJob2019@gmail.com" id="ADD_ITEMS_TABLE_1">
+        <insert tableName="items">
+            <column name="name" value="shoes"/>
+            <column name="identifier" value="44e128a5-ac7a-4c9a-be4c-224b6bf81b20"/>
+            <column name="price" value="20.75"/>
+            <column name="user_id" value="1"/>
+        </insert>
+    </changeSet>
+
+
 </databaseChangeLog>

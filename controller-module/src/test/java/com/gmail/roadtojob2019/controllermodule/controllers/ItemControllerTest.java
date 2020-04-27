@@ -14,11 +14,14 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -53,5 +56,45 @@ public class ItemControllerTest {
                 //then
                 .andExpect(status().isOk());
         verify(itemRepository, times(1)).findAll(pageParameters);
+    }
+
+    @Test
+    void testDeleteItemByIdIsOk() throws Exception {
+        //given
+        final Long itemID = 1L;
+        willDoNothing().given(itemRepository).deleteById(itemID);
+        //when
+        mockMvc.perform(get("/items/delete/" + itemID))
+                //then
+                .andExpect(status().isOk());
+        verify(itemRepository, times(1)).deleteById(itemID);
+    }
+
+    @Test
+    void testGetItemByIdIsOk() throws Exception {
+        //given
+        final User user = testService.getUser();
+        final Item item = testService.getItem(user);
+        final Long itemID = item.getId();
+        final Optional<Item> requiredItem = Optional.of(item);
+        willReturn(requiredItem).given(itemRepository).findById(itemID);
+        //when
+        mockMvc.perform(get("/items/" + itemID))
+                //then
+                .andExpect(status().isOk());
+        verify(itemRepository, times(1)).findById(itemID);
+    }
+
+    @Test
+    void testGetItemByIdThrowsOnlineMarketSuchItemNotFoundException() throws Exception {
+        //given
+        final Long itemID = 100L;
+        willReturn(Optional.empty()).given(itemRepository).findById(itemID);
+        //when
+        mockMvc.perform(get("/items/" + itemID))
+                //then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorMessage").value("Item with id = " + itemID + " was not found"));
+        verify(itemRepository, times(1)).findById(itemID);
     }
 }
