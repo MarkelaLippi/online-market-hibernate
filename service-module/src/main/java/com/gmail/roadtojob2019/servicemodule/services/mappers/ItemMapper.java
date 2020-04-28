@@ -11,7 +11,7 @@ import java.util.UUID;
 @Mapper(componentModel = "spring", imports = UUID.class)
 public interface ItemMapper {
     @Mappings({
-            @Mapping(target = "identifier", expression = "java( UUID.randomUUID().toString() )")
+            @Mapping(target = "identifier", expression = "java( item.getIdentifier().toString() )")
     })
     ItemDto itemToItemDto(Item item);
 }

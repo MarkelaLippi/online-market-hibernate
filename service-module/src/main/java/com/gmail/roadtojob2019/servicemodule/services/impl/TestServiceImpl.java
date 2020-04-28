@@ -90,7 +90,7 @@ public class TestServiceImpl implements TestService {
         return Item.builder()
                 .id(1L)
                 .name("newItem")
-                .identifier(UUID.randomUUID())
+                .identifier(UUID.fromString("44e128a5-ac7a-4c9a-be4c-224b6bf81b20"))
                 .price(BigDecimal.valueOf(12.50))
                 .user(user)
                 .build();
