@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -21,10 +22,12 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -66,6 +69,7 @@ public class RestApiItemControllerTest {
         assertEquals(BigDecimal.valueOf(12.50), actualItem.getPrice(), "itemPrice should be 12.50");
         verify(itemRepository, times(1)).findById(itemID);
     }
+
     @Test
     void testGetItemByIdThrowsOnlineMarketSuchItemNotFoundException() throws Exception {
         //given
@@ -94,12 +98,49 @@ public class RestApiItemControllerTest {
         final String contentAsString = mvcResult.getResponse().getContentAsString();
         final List<ItemDto> actualItemDtos = objectMapper.readValue(contentAsString, new TypeReference<List<ItemDto>>() {
         });
-        assertEquals(1, actualItemDtos.size(), "Size of itemDto list should be 1");
-        assertEquals(1, actualItemDtos.get(0).getId(), "itemID should be 1");
-        assertEquals("newItem", actualItemDtos.get(0).getName(), "itemName should be newItem");
-        assertEquals("44e128a5-ac7a-4c9a-be4c-224b6bf81b20", actualItemDtos.get(0).getIdentifier(),
+        final int actualListSize = actualItemDtos.size();
+        assertEquals(1, actualListSize, "Size of itemDto list should be 1");
+        final Long itemID = actualItemDtos.get(0).getId();
+        assertEquals(1, itemID, "itemID should be 1");
+        final String itemName = actualItemDtos.get(0).getName();
+        assertEquals("newItem", itemName, "itemName should be newItem");
+        final String itemIdentifier = actualItemDtos.get(0).getIdentifier();
+        assertEquals("44e128a5-ac7a-4c9a-be4c-224b6bf81b20", itemIdentifier,
                 "itemIdentifier should be 44e128a5-ac7a-4c9a-be4c-224b6bf81b20");
-        assertEquals(BigDecimal.valueOf(12.50), actualItemDtos.get(0).getPrice(), "itemPrice should be 12.50");
+        final BigDecimal itemPrice = actualItemDtos.get(0).getPrice();
+        assertEquals(BigDecimal.valueOf(12.50), itemPrice, "itemPrice should be 12.50");
         verify(itemRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testAddItemIsOk() throws Exception {
+        //given
+        final User user = testService.getUser();
+        final Item item = testService.getItem(user);
+        willReturn(item).given(itemRepository).save(any(Item.class));
+        final ItemDto itemDto = testService.getItemDto();
+        //when
+        final MvcResult mvcResult = mockMvc.perform(post("/api/items")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(itemDto)))
+                //then
+                .andExpect(status().isCreated())
+                .andReturn();
+        final String contentAsString = mvcResult.getResponse().getContentAsString();
+        final Long actualItemID = objectMapper.readValue(contentAsString, Long.class);
+        assertEquals(1, actualItemID, "itemID should be 1");
+        verify(itemRepository, times(1)).save(any(Item.class));
+    }
+
+    @Test
+    void testDeleteItemByIdIsOk() throws Exception {
+        //given
+        final Long itemID = 1L;
+        willDoNothing().given(itemRepository).deleteById(itemID);
+        //when
+        mockMvc.perform(delete("/api/items/" + itemID))
+                //then
+                .andExpect(status().isOk());
+        verify(itemRepository, times(1)).deleteById(itemID);
     }
 }

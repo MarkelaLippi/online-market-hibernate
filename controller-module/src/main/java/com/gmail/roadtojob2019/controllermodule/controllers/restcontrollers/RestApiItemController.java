@@ -27,4 +27,16 @@ public class RestApiItemController {
     List<ItemDto> getAllItems() {
         return itemService.getAllItems();
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    Long addItem(@RequestBody final ItemDto itemDto) {
+        return itemService.addItem(itemDto);
+    }
+
+    @DeleteMapping("/{itemID}")
+    @ResponseStatus(HttpStatus.OK)
+    void deleteItemById(@PathVariable final Long itemID) {
+        itemService.deleteItemById(itemID);
+    }
 }

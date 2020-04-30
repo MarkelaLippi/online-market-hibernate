@@ -14,4 +14,9 @@ public interface ItemMapper {
             @Mapping(target = "identifier", expression = "java( item.getIdentifier().toString() )")
     })
     ItemDto itemToItemDto(Item item);
+
+    @Mappings({
+            @Mapping(target = "identifier", expression = "java( UUID.fromString(itemDto.getIdentifier()) )")
+    })
+    Item itemDtoToItem(ItemDto itemDto);
 }

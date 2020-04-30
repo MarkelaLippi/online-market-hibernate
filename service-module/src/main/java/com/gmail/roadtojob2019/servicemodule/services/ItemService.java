@@ -15,4 +15,6 @@ public interface ItemService {
     ItemDto getItemById(Long itemID) throws OnlineMarketSuchItemNotFoundException;
 
     List<ItemDto> getAllItems();
+
+    Long addItem(ItemDto itemDto);
 }

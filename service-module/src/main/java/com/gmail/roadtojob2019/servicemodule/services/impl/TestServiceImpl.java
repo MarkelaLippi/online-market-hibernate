@@ -2,6 +2,7 @@ package com.gmail.roadtojob2019.servicemodule.services.impl;
 
 import com.gmail.roadtojob2019.repositorymodule.models.*;
 import com.gmail.roadtojob2019.servicemodule.services.TestService;
+import com.gmail.roadtojob2019.servicemodule.services.dtos.ItemDto;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -93,6 +94,15 @@ public class TestServiceImpl implements TestService {
                 .identifier(UUID.fromString("44e128a5-ac7a-4c9a-be4c-224b6bf81b20"))
                 .price(BigDecimal.valueOf(12.50))
                 .user(user)
+                .build();
+    }
+
+    @Override
+    public ItemDto getItemDto() {
+        return ItemDto.builder()
+                .name("newItem")
+                .identifier("44e128a5-ac7a-4c9a-be4c-224b6bf81b20")
+                .price(BigDecimal.valueOf(12.50))
                 .build();
     }
 }

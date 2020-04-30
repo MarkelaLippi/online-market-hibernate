@@ -56,4 +56,11 @@ public class ItemServiceImpl implements ItemService {
                 .map(itemMapper::itemToItemDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Long addItem(ItemDto itemDto) {
+        final Item item = itemMapper.itemDtoToItem(itemDto);
+        final Item addedItem = itemRepository.save(item);
+        return addedItem.getId();
+    }
 }
