@@ -4,7 +4,6 @@ import com.gmail.roadtojob2019.repositorymodule.models.Item;
 import com.gmail.roadtojob2019.repositorymodule.repositories.ItemRepository;
 import com.gmail.roadtojob2019.servicemodule.services.ItemService;
 import com.gmail.roadtojob2019.servicemodule.services.dtos.ItemDto;
-import com.gmail.roadtojob2019.servicemodule.services.exception.OnlineMarketSuchArticleNotFoundException;
 import com.gmail.roadtojob2019.servicemodule.services.exception.OnlineMarketSuchItemNotFoundException;
 import com.gmail.roadtojob2019.servicemodule.services.mappers.ItemMapper;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +12,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,5 +42,18 @@ public class ItemServiceImpl implements ItemService {
         final Item item = itemRepository.findById(itemID)
                 .orElseThrow(() -> new OnlineMarketSuchItemNotFoundException("Item with id = " + itemID + " was not found"));
         return itemMapper.itemToItemDto(item);
+    }
+
+    @Override
+    public List<ItemDto> getAllItems() {
+        final List<Item> items = itemRepository.findAll();
+        return toItemDtoList(items);
+    }
+
+    private List<ItemDto> toItemDtoList(final List<Item> items) {
+        return items
+                .stream()
+                .map(itemMapper::itemToItemDto)
+                .collect(Collectors.toList());
     }
 }

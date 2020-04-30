@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/items")
 @RequiredArgsConstructor
@@ -18,5 +20,11 @@ public class RestApiItemController {
     @ResponseStatus(HttpStatus.OK)
     ItemDto getItemById(@PathVariable final Long itemID) throws OnlineMarketSuchItemNotFoundException {
         return itemService.getItemById(itemID);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    List<ItemDto> getAllItems() {
+        return itemService.getAllItems();
     }
 }

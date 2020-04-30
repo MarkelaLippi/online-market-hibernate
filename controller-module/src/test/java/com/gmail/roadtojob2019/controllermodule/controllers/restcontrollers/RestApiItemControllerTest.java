@@ -1,5 +1,6 @@
 package com.gmail.roadtojob2019.controllermodule.controllers.restcontrollers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmail.roadtojob2019.repositorymodule.models.Item;
 import com.gmail.roadtojob2019.repositorymodule.models.User;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -64,7 +66,6 @@ public class RestApiItemControllerTest {
         assertEquals(BigDecimal.valueOf(12.50), actualItem.getPrice(), "itemPrice should be 12.50");
         verify(itemRepository, times(1)).findById(itemID);
     }
-
     @Test
     void testGetItemByIdThrowsOnlineMarketSuchItemNotFoundException() throws Exception {
         //given
@@ -76,5 +77,29 @@ public class RestApiItemControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorMessage").value("Item with id = 100 was not found"));
         verify(itemRepository, times(1)).findById(itemID);
+    }
+
+    @Test
+    void testGetAllItemsIsOk() throws Exception {
+        //given
+        final User user = testService.getUser();
+        final Item item = testService.getItem(user);
+        final List<Item> items = List.of(item);
+        willReturn(items).given(itemRepository).findAll();
+        //when
+        final MvcResult mvcResult = mockMvc.perform(get("/api/items"))
+                //then
+                .andExpect(status().isOk())
+                .andReturn();
+        final String contentAsString = mvcResult.getResponse().getContentAsString();
+        final List<ItemDto> actualItemDtos = objectMapper.readValue(contentAsString, new TypeReference<List<ItemDto>>() {
+        });
+        assertEquals(1, actualItemDtos.size(), "Size of itemDto list should be 1");
+        assertEquals(1, actualItemDtos.get(0).getId(), "itemID should be 1");
+        assertEquals("newItem", actualItemDtos.get(0).getName(), "itemName should be newItem");
+        assertEquals("44e128a5-ac7a-4c9a-be4c-224b6bf81b20", actualItemDtos.get(0).getIdentifier(),
+                "itemIdentifier should be 44e128a5-ac7a-4c9a-be4c-224b6bf81b20");
+        assertEquals(BigDecimal.valueOf(12.50), actualItemDtos.get(0).getPrice(), "itemPrice should be 12.50");
+        verify(itemRepository, times(1)).findAll();
     }
 }
