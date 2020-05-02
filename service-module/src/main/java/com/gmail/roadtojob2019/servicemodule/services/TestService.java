@@ -19,4 +19,6 @@ public interface TestService {
     Item getItem(User user);
 
     ItemDto getItemDto();
+
+    Order getOrder(User user);
 }

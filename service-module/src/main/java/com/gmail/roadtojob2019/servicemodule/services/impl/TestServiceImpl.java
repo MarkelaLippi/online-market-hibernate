@@ -105,4 +105,15 @@ public class TestServiceImpl implements TestService {
                 .price(BigDecimal.valueOf(12.50))
                 .build();
     }
+
+    @Override
+    public Order getOrder(User user) {
+        return Order.builder()
+                .id(1L)
+                .date(LocalDateTime.of(2020, 5, 2, 14, 8, 30))
+                .status(Status.NEW)
+                .user(user)
+                .items(Collections.emptySet())
+                .build();
+    }
 }
